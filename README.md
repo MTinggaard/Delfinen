@@ -3,9 +3,9 @@ Semestrets eksamensprojekt. Grupper på 4, to sprints, ét fælles GitHub-reposi
 
 ## Gruppen
 
-| Fornavn | GitHub     |
-|---------|------------|
-| Mikkel  | MTinggaard |
-|         |            |
-|         |            |
-| Asbjørn | AsbjornKMR |
+| Fornavn | GitHub       |
+|---------|--------------|
+| Mikkel  | MTinggaard   |
+| Ask     | Askhuae      |
+| Gustav  | Korzanamusic |
+| Asbjørn | AsbjornKMR   |
