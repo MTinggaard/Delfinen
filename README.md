@@ -5,7 +5,7 @@ Semestrets eksamensprojekt. Grupper på 4, to sprints, ét fælles GitHub-reposi
 
 | Fornavn | GitHub     |
 |---------|------------|
-| Mikkel | MTinggaard |
-|      |     |
-|   |  |
-|   |     |
+| Mikkel  | MTinggaard |
+|         |            |
+|         |            |
+| Asbjørn | AsbjornKMR |
