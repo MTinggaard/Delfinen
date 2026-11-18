@@ -13,7 +13,7 @@ public class Member {
     private ArrayList<SwimDisciplin> swimDisciplin;
     private ArrayList<SwimResult> results;
 
-    public Member(int memberNumber, String name, LocalDate birthdate, MemberType memberType, MemberShipFee memberShipFee, ArrayList<SwimDisciplin> swimDisciplin, ArrayList<SwimResult> results) {
+    public Member(int memberNumber, String name, LocalDate birthdate, MemberType memberType, ArrayList<SwimDisciplin> swimDisciplin) {
         this.memberNumber = memberNumber;
         this.name = name;
         this.birthdate = birthdate;

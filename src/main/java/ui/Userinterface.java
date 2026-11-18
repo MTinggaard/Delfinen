@@ -1,6 +1,8 @@
 package ui;
 
+import domainmodel.Chairman;
 import domainmodel.Controller;
+import domainmodel.SwimClub;
 
 import java.util.Scanner;
 
@@ -10,6 +12,9 @@ public class Userinterface {
     private boolean running = true;
 
     public void startProgram() {
+        SwimClub swimClub = new SwimClub("Delfinen");
+        Chairman chairman = new Chairman(swimClub);
+
         System.out.println("Velkommen til Delfinen svømmeklub!");
         printMenu();
         String choice = scanner.nextLine().trim();
