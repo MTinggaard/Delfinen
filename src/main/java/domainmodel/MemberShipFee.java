@@ -4,8 +4,27 @@ public class MemberShipFee {
     private boolean paid;
     private double price;
 
-    public MemberShipFee (Member member) {
-        this.price = price;
-
+    public MemberShipFee(Member member) {
+        this.price = calculatePrice(member);
+        this.paid = false;
     }
+
+    public double calculatePrice(Member member) {
+        if (member.getMemberShipType.equals(MemberType.PASSIVE)) {
+
+            price = 500;
+            return price;
+        } else if (member.getAge() < 18) {
+            price = 1000;
+            return price;
+        } else if (member.getAge() >= 18 && member.getAge() < 60) {
+            price = 1600;
+            return price;
+        } else if (member.getAge() > 60) {
+            price = 1600*0.75;
+            return price;
+        }
+    }
+
+
 }
