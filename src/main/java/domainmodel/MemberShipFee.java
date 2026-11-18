@@ -1,25 +1,27 @@
 package domainmodel;
 
+import static domainmodel.MemberType.PASSIVE;
+
 public class MemberShipFee {
     private boolean paid;
     private double price;
 
-    public MemberShipFee(Member member) {
-        this.price = calculatePrice(member);
+    public MemberShipFee(int age, Enum membertype) {
+        this.price = calculatePrice(age,membertype);
         this.paid = false;
     }
 
-    public double calculatePrice(Member member) {
-        if (member.getMemberType().equals(MemberType.PASSIVE)) {
+    public double calculatePrice(int age, Enum MemberType) {
+        if (MemberType == PASSIVE) {
             price = 500;
             return price;
-        } else if (member.getAge() < 18) {
+        } else if (age < 18) {
             price = 1000;
             return price;
-        } else if (member.getAge() >= 18 && member.getAge() < 60) {
+        } else if (age >= 18 && age < 60) {
             price = 1600;
             return price;
-        } else if (member.getAge() > 60) {
+        } else if ( age > 60) {
             price = 1600 * 0.75;
             return price;
         }
@@ -30,7 +32,7 @@ public class MemberShipFee {
         return price;
     }
 
-    public boolean isPaid() {
-        return paid;
+    public void setIsPaid(boolean paid) {
+        this.paid = paid;
     }
 }

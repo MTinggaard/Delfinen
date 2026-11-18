@@ -13,6 +13,7 @@ public class Treasurer {
 
 
     public boolean setMemberPayed(Member member) {
-        return member.getMemberShipFee().isPaid();
+                member.getMemberShipFee().setIsPaid(true);
+                return true;
     }
 }

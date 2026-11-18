@@ -1,9 +1,6 @@
 package ui;
 
-import domainmodel.Controller;
-import domainmodel.Member;
-import domainmodel.MemberType;
-import domainmodel.SwimDisciplin;
+import domainmodel.*;
 
 import java.util.ArrayList;
 import java.time.LocalDate;
