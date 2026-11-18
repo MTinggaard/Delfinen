@@ -10,11 +10,11 @@ public class SwimClub {
         this.name = name;
     }
 
-    public void addMember(Member member){
+    public void addMember(Member member) {
         members.add(member);
     }
 
-    public int getMemberCount(){
+    public int getMemberCount() {
         return members.size();
     }
 
