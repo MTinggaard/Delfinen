@@ -193,7 +193,7 @@ public class Userinterface {
     public void showMembershipFees() {
         for (Member member : controller.getMemberList()) {
             System.out.println(member.getName() + " (" + member.getMemberNumber() + "): "
-                    + controller.getMemberShipFee(member) + " kr.");
+                    + controller.getMemberShipFee(member) + " kr. har de betalt:" + controller.getPaidInfo(member));
         }
     }
 
@@ -202,7 +202,7 @@ public class Userinterface {
         int memberShipNumber = scanner.nextInt();
         for (Member member : controller.getMemberList()) {
             if (member.getMemberNumber()==memberShipNumber) {
-                controller.memberHasPayed(member);
+                controller.getMemberHasPayed(member);
             } else {
                 System.out.println("findes ikke et medlem med det medlems nummer");
             }

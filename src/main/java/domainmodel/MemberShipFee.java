@@ -3,12 +3,12 @@ package domainmodel;
 import static domainmodel.MemberType.PASSIVE;
 
 public class MemberShipFee {
-    private boolean paid;
+    private boolean paid = false;
     private double price;
 
     public MemberShipFee(int age, Enum membertype) {
         this.price = calculatePrice(age,membertype);
-        this.paid = false;
+        this.paid = getPaidInfo();
     }
 
     public double calculatePrice(int age, Enum MemberType) {
@@ -28,11 +28,15 @@ public class MemberShipFee {
         return 0;
     }
 
+    public boolean getPaidInfo() {
+        return paid;
+    }
+
     public double getPrice() {
         return price;
     }
 
-    public void setIsPaid(boolean paid) {
-        this.paid = paid;
+    public void setIsPaid() {
+        this.paid = true;
     }
 }
