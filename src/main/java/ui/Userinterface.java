@@ -162,13 +162,23 @@ public class Userinterface {
         } else {
             for (Member member : members) {
                 String seniorOrJunior;
+                String memberType;
                 if (controller.isJunior(member)) {
                     seniorOrJunior = "Junior";
                 } else {
                     seniorOrJunior = "Senior";
                 }
+
+                if (member.getMemberType() == MemberType.PASSIVE) {
+                    memberType = "Passiv";
+                } else if (member.getMemberType() == MemberType.EXERCISEER) {
+                    memberType = "Motionist";
+                } else {
+                    memberType = "Konkurrencesvømmer";
+                }
+
                 System.out.println(member.getMemberNumber() + ", " + member.getName() + ", "
-                        + member.getAge() + " år, " + seniorOrJunior + ", " + member.getMemberType());
+                        + member.getAge() + " år, " + seniorOrJunior + ", " + memberType);
             }
         }
     }
