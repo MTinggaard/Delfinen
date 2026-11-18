@@ -51,7 +51,7 @@ public class Userinterface {
     private void showChairmanMenu() {
         boolean inMenu = true;
 
-        while(inMenu) {
+        while (inMenu) {
             System.out.println("========== FORMAND ==========");
             System.out.println("1: Opret medlem");
             System.out.println("2: Se alle medlemmer");
@@ -191,7 +191,7 @@ public class Userinterface {
     private void treasurerMenu() {
         boolean inMenu = true;
 
-        while(inMenu) {
+        while (inMenu) {
             System.out.println("========== Kasserer ==========");
             System.out.println("1. se alle medlemers betaling");
             System.out.println("2. rediger medlemmers betaling");
@@ -245,20 +245,45 @@ public class Userinterface {
     public void showMembershipFees() {
         for (Member member : controller.getMemberList()) {
             System.out.println(member.getName() + " (" + member.getMemberNumber() + "): "
-                    + controller.getMemberShipFee(member) + " kr. har de betalt:" + controller.getPaidInfo(member));
+                    + controller.getMemberShipFee(member) + " kr. har de betalt:" + translatePaid(controller.getPaidInfo(member)));
         }
     }
 
     public void editPayment() {
+        boolean fundet = false;
+        Member chosenMember = null;
         System.out.println("søg for et medlem med medlems id");
         int memberShipNumber = scanner.nextInt();
+        scanner.nextLine();
         for (Member member : controller.getMemberList()) {
-            if (member.getMemberNumber()==memberShipNumber) {
-                controller.getMemberHasPayed(member);
-            } else {
-                System.out.println("findes ikke et medlem med det medlems nummer");
+            if (member.getMemberNumber() == memberShipNumber) {
+                chosenMember = member;
+                fundet = true;
             }
         }
-
+        if (!fundet) {
+            System.out.println("findes ikke et medlem med det medlems nummer");
+        }
+        if (fundet) {
+            System.out.println("du har valgt " + chosenMember.getName() + ". person id:" + chosenMember.getMemberNumber() + ". " + controller.getMemberShipFee(chosenMember) + "Kr: " + translatePaid(controller.getPaidInfo(chosenMember)));
+            System.out.println("ville du ændre hans status til betalt (ja/nej)");
+            String comand = scanner.nextLine().toLowerCase().trim();
+            switch (comand) {
+                case "ja" -> controller.setMemberHasPayed(chosenMember);
+                case "nej" -> System.out.println("ingenting er blevet ændret");
+                default -> System.out.println("den komando kan ikke bruges");
+            }
+            System.out.println(chosenMember.getName() + ". " + chosenMember.getMemberNumber() + ". " + controller.getMemberShipFee(chosenMember) + "kr: " + translatePaid(controller.getPaidInfo(chosenMember)));
+        }
     }
+
+    public String translatePaid(boolean trueOrFalse) {
+        if (trueOrFalse){
+            return("betalt");
+        }
+        else {
+            return("ikke betalt");
+        }
+    }
+
 }

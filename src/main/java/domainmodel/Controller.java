@@ -37,7 +37,7 @@ private Role loggedInUser;
 
     public boolean getPaidInfo(Member member) { return treasurer.getPaidinfo(member);}
 
-    public boolean getMemberHasPayed(Member member){ return treasurer.setMemberPayed(member);}
+    public boolean setMemberHasPayed(Member member){ return treasurer.setMemberPayed(member);}
 
     public Chairman getChairman() {
         return chairman;
