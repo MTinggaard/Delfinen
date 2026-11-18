@@ -19,13 +19,13 @@ public class Userinterface {
 
     public void startProgram() {
         boolean loggedIn = false;
+        System.out.println("Velkommen til Delfinen svømmeklub!");
         while (!loggedIn) {
-            System.out.println("Velkommen til Delfinen svømmeklub!");
             System.out.println("             Login                ");
             System.out.print("Brugernavn: ");
-            String username = scanner.nextLine().strip();
+            String username = scanner.nextLine().strip().toLowerCase();
             System.out.print("Password: ");
-            String password = scanner.nextLine().strip();
+            String password = scanner.nextLine().strip().toLowerCase();
             controller.setLoggedInUser(username, password);
             System.out.println();
 
@@ -48,7 +48,7 @@ public class Userinterface {
                     trainerMenu();
                     loggedIn = true;
                 }
-                default -> System.out.println("Ugyldigt login.");
+                default -> System.out.println("Ugyldigt login. Prøv igen.");
             }
         }
 

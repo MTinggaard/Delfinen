@@ -3,7 +3,8 @@ package domainmodel;
 public enum Role {
     CHAIRMAN,
     TREASURER,
-    TRAINER;
+    TRAINER,
+    DENIEDUSER;
 
     @Override
     public String toString() {

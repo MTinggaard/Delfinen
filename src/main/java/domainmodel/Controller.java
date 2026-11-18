@@ -56,6 +56,6 @@ private Role loggedInUser;
         }
         if(username.equals("træner") && password.equals("1234")){
             this.loggedInUser = Role.TRAINER;
-        }
+        } else this.loggedInUser = Role.DENIEDUSER;
     }
 }
