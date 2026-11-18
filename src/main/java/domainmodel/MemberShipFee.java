@@ -19,7 +19,7 @@ public class MemberShipFee {
         } else if (member.getAge() >= 18 && member.getAge() < 60) {
             price = 1600;
             return price;
-        } else if (member.getAge() > 60) {
+        } else if (member.getAge() >= 60) {
             price = 1600 * 0.75;
             return price;
         }

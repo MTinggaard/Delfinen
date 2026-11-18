@@ -35,6 +35,8 @@ public class Member {
         this.birthdate = birthdate;
         this.memberType = memberType;
         this.swimDisciplin = swimDisciplin;
+        this.results = new ArrayList<>();
+        this.memberShipFee = new MemberShipFee(this);
     }
 
     public int getMemberNumber() {
