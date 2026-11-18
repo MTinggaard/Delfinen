@@ -23,9 +23,11 @@ private Treasurer treasurer;
         return chairman.isJunior(member);
     }
 
-
-
     public Member createMember(String name, LocalDate birthdate, MemberType memberType, ArrayList<SwimDisciplin> swimDiscipline){
         return chairman.createMember(name, birthdate, memberType, swimDiscipline);
+    }
+
+    public double getMemberShipFee(Member member){
+        return treasurer.getMembershipFee(member);
     }
 }

@@ -173,4 +173,10 @@ public class Userinterface {
         }
     }
 
+    public void showMembershipFees() {
+        for (Member member : controller.getMemberList()) {
+            System.out.println(member.getName() + " (" + member.getMemberNumber() + "): "
+                    + controller.getMemberShipFee(member) + " kr.");
+        }
+    }
 }
