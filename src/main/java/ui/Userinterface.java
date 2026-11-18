@@ -71,18 +71,38 @@ public class Userinterface {
 
     private void createMember() {
         System.out.println("Udfyld følgende for at tilføje et medlem: Navn, fødselsdato, medlemskabstype, discipliner hvis det en konkurrencesvømmer");
-        System.out.print("Navn: ");
-        String name = scanner.nextLine();
-
-        LocalDate birthdate = readDate("Fødselsdato (\"dd-mm-åååå\"): ");
-
-        System.out.println("Vælg medlemstype:");
-        System.out.println("\t1. Passiv");
-        System.out.println("\t2. Motonist");
-        System.out.println("\t3. Konkurrencesvømmer");
+        String name;
+        LocalDate birthdate;
         MemberType memberType = MemberType.PASSIVE;
+        ;
+        SwimDisciplin swimDisciplin;
+
+        // Name input
+        while (true) {
+            System.out.print("Navn: ");
+            name = scanner.nextLine();
+            if (name.isBlank()) {
+                System.out.println("Navn må ikke være tomt. Prøv igen");
+            } else break;
+        }
+
+        // Birthdate input
+        while (true) {
+            birthdate = readDate("Fødselsdato (\"dd-mm-åååå\"): ");
+            if (birthdate.isAfter(LocalDate.now())) {
+                System.out.println("Fødselsdatoen kan ikke være i fremtiden. Prøv igen");
+            } else if (birthdate.isBefore(LocalDate.now().minusYears(100))) {
+                System.out.println("Du for gammel til den her klub");
+            } else break;
+        }
+
+        // MemberType input
         boolean ask = true;
         while (ask) {
+            System.out.println("Vælg medlemstype:");
+            System.out.println("\t1. Passiv");
+            System.out.println("\t2. Motonist");
+            System.out.println("\t3. Konkurrencesvømmer");
             String choice = scanner.nextLine().trim();
             switch (choice) {
                 case "1" -> {
@@ -97,33 +117,41 @@ public class Userinterface {
                     memberType = MemberType.COMPETITIVE;
                     ask = false;
                 }
-                default -> System.out.println("Ugyldigt svar: " + choice);
+                default -> {
+                    System.out.println("Ugyldigt svar: " + choice);
+                    System.out.println("Dit svar skal være enten 1, 2 eller 3");
+                }
             }
         }
         ArrayList<SwimDisciplin> swimDiscipline = new ArrayList<>();
         if (memberType == MemberType.COMPETITIVE) {
-            System.out.println("Vælg discipliner svømmeren konkurrere i: ");
-            System.out.println("1. Crawl");
-            System.out.println("2. Brystsvømning");
-            System.out.println("3. Rygcrawl");
-            System.out.println("4. Butterfly");
-            System.out.println("Indtast numre adskilt af komma (Eksempel 1, 3, 4): ");
-            String input = scanner.nextLine();
-            String[] choices = input.split(",");
-            for (String choice : choices) {
-                choice = choice.strip();
-                if (choice.equals("1")) {
-                    swimDiscipline.add(SwimDisciplin.CRAWL);
+            while (true) {
+                System.out.println("Vælg discipliner svømmeren konkurrere i: ");
+                System.out.println("1. Crawl");
+                System.out.println("2. Brystsvømning");
+                System.out.println("3. Rygcrawl");
+                System.out.println("4. Butterfly");
+                System.out.println("Indtast numre adskilt af komma (Eksempel 1, 3, 4): ");
+                String input = scanner.nextLine();
+                String[] choices = input.split(",");
+                for (String choice : choices) {
+                    choice = choice.strip();
+                    if (choice.equals("1")) {
+                        swimDiscipline.add(SwimDisciplin.CRAWL);
+                    }
+                    if (choice.equals("2")) {
+                        swimDiscipline.add(BREASTSTROKE);
+                    }
+                    if (choice.equals("3")) {
+                        swimDiscipline.add(SwimDisciplin.BACKSTROKE);
+                    }
+                    if (choice.equals("4")) {
+                        swimDiscipline.add(SwimDisciplin.BUTTERFLY);
+                    }
                 }
-                if (choice.equals("2")) {
-                    swimDiscipline.add(BREASTSTROKE);
-                }
-                if (choice.equals("3")) {
-                    swimDiscipline.add(SwimDisciplin.BACKSTROKE);
-                }
-                if (choice.equals("4")) {
-                    swimDiscipline.add(SwimDisciplin.BUTTERFLY);
-                }
+                if(!swimDiscipline.isEmpty()){
+                    break;
+                } else System.out.println("En konkurrencesvømmer skal mindst have en disciplin. Prøv igen");
             }
         }
         try {
@@ -133,12 +161,12 @@ public class Userinterface {
             System.out.println(" - Navn: " + newMember.getName());
             System.out.println(" - Fødselsdato: " + newMember.getBirthdate().format(formatter));
             System.out.println(" - Medlemstype: " + newMember.getMemberType());
-            if (newMember.getMemberType()==MemberType.COMPETITIVE){
+            if (newMember.getMemberType() == MemberType.COMPETITIVE) {
                 System.out.print(" - Svømmediscipliner: ");
                 System.out.println(newMember.getSwimDisciplin().toString().replace("[", "").replace("]", ""));
             }
             System.out.println();
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
     }
