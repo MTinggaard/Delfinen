@@ -50,11 +50,9 @@ private Role loggedInUser;
     public void setLoggedInUser(String username, String password) {
         if(username.equals("formand") && password.equals("1234")){
             this.loggedInUser = Role.CHAIRMAN;
-        }
-        if(username.equals("kasserer") && password.equals("1234")){
+        }else if(username.equals("kasserer") && password.equals("1234")){
             this.loggedInUser = Role.TREASURER;
-        }
-        if(username.equals("træner") && password.equals("1234")){
+        }else if(username.equals("træner") && password.equals("1234")){
             this.loggedInUser = Role.TRAINER;
         } else this.loggedInUser = Role.DENIEDUSER;
     }

@@ -65,7 +65,7 @@ public class Userinterface {
         System.out.println("========== FORMAND ==========");
         System.out.println("1: Opret medlem");
         System.out.println("2: Se alle medlemmer");
-        System.out.println("4: Stop programmet");
+        System.out.println("3: Stop programmet");
 
         String choice = scanner.nextLine().trim();
         switch (choice) {
