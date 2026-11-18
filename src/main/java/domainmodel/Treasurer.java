@@ -9,7 +9,7 @@ public class Treasurer {
 
     public void showMembershipFees() {
         for (Member member : swimClub.getMembers()) {
-            System.out.println(member.getName() + "(" + member.getMemberNumber() + "): " + member.getMemberShipFee() + "kr.");
+            System.out.println(member.getName() + "(" + member.getMemberNumber() + "): " + member.getMemberShipFee().getPrice() + " kr.");
         }
     }
 }
