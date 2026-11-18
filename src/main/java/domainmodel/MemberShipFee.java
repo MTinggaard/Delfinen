@@ -29,4 +29,8 @@ public class MemberShipFee {
     public double getPrice() {
         return price;
     }
+
+    public boolean isPaid() {
+        return paid;
+    }
 }

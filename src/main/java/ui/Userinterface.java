@@ -10,6 +10,9 @@ import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 import java.time.format.DateTimeFormatter;
 
+import static domainmodel.MemberType.EXERCISEER;
+import static domainmodel.SwimDisciplin.BREASTSTROKE;
+
 public class Userinterface {
     private Scanner scanner = new Scanner(System.in);
     private Controller controller = new Controller();
@@ -20,6 +23,9 @@ public class Userinterface {
         System.out.println("Velkommen til Delfinen svømmeklub!");
         printMenu();
         String choice = scanner.nextLine().trim();
+        controller.getChairman().createMember("assk", LocalDate.of(2003,11,18), EXERCISEER, new ArrayList<SwimDisciplin>());
+        controller.getChairman().createMember("Gunnerstav",LocalDate.of(2004,4,18) , EXERCISEER, new ArrayList<SwimDisciplin>());
+        controller.getChairman().createMember("Mikker", LocalDate.of(2004,1,12), EXERCISEER, new ArrayList<SwimDisciplin>());
 
         switch (choice) {
             case "1" -> {
@@ -85,7 +91,7 @@ public class Userinterface {
                     ask = false;
                 }
                 case "2" -> {
-                    memberType = MemberType.EXERCISEER;
+                    memberType = EXERCISEER;
                     ask = false;
                 }
                 case "3" -> {
@@ -110,7 +116,7 @@ public class Userinterface {
                     swimDiscipline.add(SwimDisciplin.CRAWL);
                 }
                 if (choice.equals("2")) {
-                    swimDiscipline.add(SwimDisciplin.BREASTSTROKE);
+                    swimDiscipline.add(BREASTSTROKE);
                 }
                 if (choice.equals("3")) {
                     swimDiscipline.add(SwimDisciplin.BACKCRAWL);
@@ -141,8 +147,16 @@ public class Userinterface {
         }
     }
 
-    private void treasurerView() {
-
+    private void treasurerView ()
+    {
+        System.out.println("kasserens funktioner");
+        System.out.println("1. se alle medlemers betaling");
+        System.out.println("2. rediger medlemmers betaling");
+        String choice = scanner.nextLine().trim();
+        switch (choice){
+            case "1" -> showMembershipFees();
+            case "2" -> editPayment();
+        }
     }
 
     private void trainerView() {
@@ -166,7 +180,7 @@ public class Userinterface {
 
                 if (member.getMemberType() == MemberType.PASSIVE) {
                     memberType = "Passiv";
-                } else if (member.getMemberType() == MemberType.EXERCISEER) {
+                } else if (member.getMemberType() == EXERCISEER) {
                     memberType = "Motionist";
                 } else {
                     memberType = "Konkurrencesvømmer";
@@ -183,5 +197,16 @@ public class Userinterface {
             System.out.println(member.getName() + " (" + member.getMemberNumber() + "): "
                     + controller.getMemberShipFee(member) + " kr.");
         }
+    }
+    public void editPayment(){
+        System.out.println("søg for et medlem med medlems id");
+        int medlemsnummer = scanner.nextInt();
+        for(Member member:controller.getMemberList()){
+            if(controller.getMemberList().contains(medlemsnummer)){
+                controller.memberHasPayed(member);
+            } else {
+                System.out.println("findes ikke et medlem med det medlems nummer");}
+        }
+
     }
 }

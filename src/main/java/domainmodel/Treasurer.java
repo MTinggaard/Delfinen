@@ -10,4 +10,9 @@ public class Treasurer {
     public double getMembershipFee(Member member) {
         return member.getMemberShipFee().getPrice();
     }
+
+
+    public boolean setMemberPayed(Member member) {
+        return member.getMemberShipFee().isPaid();
+    }
 }
