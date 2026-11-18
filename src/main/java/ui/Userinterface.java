@@ -65,7 +65,7 @@ public class Userinterface {
         String choice = scanner.nextLine().trim();
         switch (choice) {
             case "1" -> createMember();
-            case "2" -> System.out.println("Funktion kommer");
+            case "2" -> showMemberList();
         }
     }
 
