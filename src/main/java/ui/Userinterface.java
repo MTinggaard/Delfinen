@@ -18,54 +18,54 @@ public class Userinterface {
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     public void startProgram() {
-        System.out.println("Velkommen til Delfinen svømmeklub!");
-        printMenu();
-        String choice = scanner.nextLine().trim();
         controller.getChairman().createMember("Ask", LocalDate.of(2003, 11, 18), EXERCISEER, null);
         controller.getChairman().createMember("Gustav", LocalDate.of(2004, 4, 23), EXERCISEER, null);
         controller.getChairman().createMember("Mikkel", LocalDate.of(2004, 9, 23), EXERCISEER, null);
 
-        switch (choice) {
-            case "1" -> {
-                while (running) {
-                    chairmanView();
-                }
+        boolean loggedIn = false;
+        System.out.println("Velkommen til Delfinen svømmeklub!");
+        while (running) {
+            System.out.println("Login");
+
+            System.out.print("Brugernavn: ");
+            String username = scanner.nextLine().strip().toLowerCase();
+
+            System.out.print("Password: ");
+            String password = scanner.nextLine().strip();
+            System.out.println();
+
+            controller.setLoggedInUser(username, password);
+
+            switch (controller.getLoggedInUser()) {
+                case CHAIRMAN -> showChairmanMenu();
+                case TREASURER -> treasurerMenu();
+                case TRAINER -> trainerMenu();
+                default -> System.out.println("Ugyldigt login. Prøv igen.");
             }
-            case "2" -> {
-                while (running) {
-                    treasurerView();
-                }
-            }
-            case "3" -> {
-                while (running) {
-                    trainerView();
-                }
-            }
-            case "0" -> running = false;
-            default -> System.out.println("Ukendt valg: " + choice);
         }
-
     }
 
-    private void printMenu() {
-        System.out.println("Vælg din funktion i klubben:");
-        System.out.println("Tast 0 for at stoppe programmet");
-        System.out.println("Tast 1 for formand");
-        System.out.println("Tast 2 for kasserer");
-        System.out.println("Tast 3 for træner");
+    private void trainerMenu() {
     }
 
-    private void chairmanView() {
-        System.out.println("Formand funktioner:");
-        System.out.println("1: Opret medlem");
-        System.out.println("2: Se alle medlemmer");
-        System.out.println("3: Stop programmet");
+    private void showChairmanMenu() {
+        boolean inMenu = true;
 
-        String choice = scanner.nextLine().trim();
-        switch (choice) {
-            case "1" -> createMember();
-            case "2" -> showMemberList();
-            case "3" -> running = false;
+        while(inMenu) {
+            System.out.println("========== FORMAND ==========");
+            System.out.println("1: Opret medlem");
+            System.out.println("2: Se alle medlemmer");
+            System.out.println("3: Log ud");
+            System.out.println("0: Stop programmet");
+
+            String choice = scanner.nextLine().trim();
+            switch (choice) {
+                case "1" -> createMember();
+                case "2" -> showMemberList();
+                case "3" -> inMenu = false;
+                case "0" -> running = false;
+                default -> System.out.println("Ugyldigt valg");
+            }
         }
     }
 
@@ -149,7 +149,7 @@ public class Userinterface {
                         swimDiscipline.add(SwimDisciplin.BUTTERFLY);
                     }
                 }
-                if(!swimDiscipline.isEmpty()){
+                if (!swimDiscipline.isEmpty()) {
                     break;
                 } else System.out.println("En konkurrencesvømmer skal mindst have en disciplin. Prøv igen");
             }
@@ -188,20 +188,22 @@ public class Userinterface {
         }
     }
 
-    private void treasurerView() {
-        System.out.println("kasserens funktioner");
-        System.out.println("1. se alle medlemers betaling");
-        System.out.println("2. rediger medlemmers betaling");
-        String choice = scanner.nextLine().trim();
-        switch (choice) {
-            case "1" -> showMembershipFees();
-            case "2" -> editPayment();
-            default -> System.out.println("den komando kendes ikke");
+    private void treasurerMenu() {
+        boolean inMenu = true;
+
+        while(inMenu) {
+            System.out.println("========== Kasserer ==========");
+            System.out.println("1. se alle medlemers betaling");
+            System.out.println("2. rediger medlemmers betaling");
+            System.out.println("0. Log ud");
+            String choice = scanner.nextLine().trim();
+            switch (choice) {
+                case "1" -> showMembershipFees();
+                case "2" -> editPayment();
+                case "0" -> inMenu = false;
+                default -> System.out.println("den komando kendes ikke");
+            }
         }
-    }
-
-    private void trainerView() {
-
     }
 
     public void showMemberList() {
