@@ -8,6 +8,7 @@ private SwimClub swimClub;
 private Chairman chairman;
 private Treasurer treasurer;
 private Trainer trainer;
+private Role loggedInUser;
 
 
     public Controller() {
@@ -38,5 +39,21 @@ private Trainer trainer;
 
     public Chairman getChairman() {
         return chairman;
+    }
+
+    public Role getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public void setLoggedInUser(String username, String password) {
+        if(username.equals("formand") && password.equals("1234")){
+            this.loggedInUser = Role.CHAIRMAN;
+        }
+        if(username.equals("kasserer") && password.equals("1234")){
+            this.loggedInUser = Role.TREASURER;
+        }
+        if(username.equals("træner") && password.equals("1234")){
+            this.loggedInUser = Role.TRAINER;
+        }
     }
 }
