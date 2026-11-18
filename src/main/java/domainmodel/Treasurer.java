@@ -6,8 +6,8 @@ public class Treasurer {
     public Treasurer(SwimClub swimClub) {
         this.swimClub = swimClub;
     }
-
-//    public double calculateExpectedFees(){
-//
-//    }
+    public void showMembershipFees(){
+        for(Member members : member)
+        {System.out.println();}
+    }
 }
