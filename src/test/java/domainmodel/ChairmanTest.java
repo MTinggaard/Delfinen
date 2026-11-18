@@ -30,9 +30,14 @@ public class ChairmanTest {
 
     @Test
     void createMoreMembers(){
+        // Arrange
+        ArrayList<SwimDisciplin> disciplins = new ArrayList<>();
+        disciplins.add(SwimDisciplin.BUTTERFLY);
+        disciplins.add(SwimDisciplin.CRAWL);
+
         // Act
         chairman.createMember("Gustav", LocalDate.of(2004, 5, 23), MemberType.PASSIVE, null);
-        chairman.createMember("Ask", LocalDate.of(2003, 11, 18), MemberType.COMPETITIVE, );
+        chairman.createMember("Ask", LocalDate.of(2003, 11, 18), MemberType.COMPETITIVE,  disciplins);
 
         // Assert
         assertEquals(1, swimClub.getMemberCount());
