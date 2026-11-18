@@ -1,9 +1,6 @@
 package ui;
 
-import domainmodel.Controller;
-import domainmodel.Member;
-import domainmodel.MemberType;
-import domainmodel.SwimDisciplin;
+import domainmodel.*;
 
 import java.util.ArrayList;
 import java.time.LocalDate;
@@ -248,7 +245,7 @@ public class Userinterface {
     public void showMembershipFees() {
         for (Member member : controller.getMemberList()) {
             System.out.println(member.getName() + " (" + member.getMemberNumber() + "): "
-                    + controller.getMemberShipFee(member) + " kr.");
+                    + controller.getMemberShipFee(member) + " kr. har de betalt:" + controller.getPaidInfo(member));
         }
     }
 
@@ -256,8 +253,8 @@ public class Userinterface {
         System.out.println("søg for et medlem med medlems id");
         int memberShipNumber = scanner.nextInt();
         for (Member member : controller.getMemberList()) {
-            if (member.getMemberNumber() == memberShipNumber) {
-                controller.memberHasPayed(member);
+            if (member.getMemberNumber()==memberShipNumber) {
+                controller.getMemberHasPayed(member);
             } else {
                 System.out.println("findes ikke et medlem med det medlems nummer");
             }

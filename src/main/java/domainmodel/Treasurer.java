@@ -11,8 +11,12 @@ public class Treasurer {
         return member.getMemberShipFee().getPrice();
     }
 
+    public boolean getPaidinfo(Member member){
+        return member.getMemberShipFee().getPaidInfo();
+    }
 
     public boolean setMemberPayed(Member member) {
-        return member.getMemberShipFee().isPaid();
+                member.getMemberShipFee().setIsPaid();
+                return true;
     }
 }

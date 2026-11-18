@@ -35,6 +35,7 @@ public class Member {
         this.birthdate = birthdate;
         this.memberType = memberType;
         this.swimDisciplin = swimDisciplin;
+        this.memberShipFee = new MemberShipFee(this.getAge(),this.memberType);
     }
 
     public int getMemberNumber() {
@@ -70,4 +71,5 @@ public class Member {
         LocalDate birthday = getBirthdate();
         return (int) ChronoUnit.YEARS.between(birthday, today);
     }
+
 }
