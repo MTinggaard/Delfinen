@@ -10,7 +10,7 @@ public class MemberShipFee {
     }
 
     public double calculatePrice(Member member) {
-        if (member.getMemberShipType.equals(MemberType.PASSIVE)) {
+        if (member.getMemberType().equals(MemberType.PASSIVE)) {
             price = 500;
             return price;
         } else if (member.getAge() < 18) {
