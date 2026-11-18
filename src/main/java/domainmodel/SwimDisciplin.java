@@ -1,4 +1,8 @@
 package domainmodel;
 
-public class SwimDisciplin {
+public enum SwimDisciplin {
+    BUTTERFLY,
+    CRAWL,
+    BACKCRAWL,
+    BREASTSTROKE
 }
