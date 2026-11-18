@@ -7,7 +7,7 @@ public class Treasurer {
         this.swimClub = swimClub;
     }
 
-    public double calculateExpectedFees(){
-
-    }
+//    public double calculateExpectedFees(){
+//
+//    }
 }
