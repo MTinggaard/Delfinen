@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ChairmanTest {
 
@@ -40,6 +40,23 @@ public class ChairmanTest {
         chairman.createMember("Ask", LocalDate.of(2003, 11, 18), MemberType.COMPETITIVE,  disciplins);
 
         // Assert
-        assertEquals(1, swimClub.getMemberCount());
+        assertEquals(2, swimClub.getMemberCount());
+        assertEquals(1 , swimClub.getMembers().getFirst().getMemberNumber());
+        assertEquals(2 , swimClub.getMembers().get(1).getMemberNumber());
+        assertNotEquals(swimClub.getMembers().get(0).getMemberNumber(), swimClub.getMembers().get(1).getMemberNumber());
+    }
+
+    @Test
+    void createInvalidMember(){
+        // Act + Assert
+        assertThrows(IllegalArgumentException.class, () -> {
+            chairman.createMember("", LocalDate.of(2004, 5, 23), MemberType.PASSIVE, null);
+        });
+        assertEquals(0, swimClub.getMemberCount());
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            chairman.createMember(null, LocalDate.of(2004, 5, 23), MemberType.PASSIVE, null);
+        });
+
     }
 }

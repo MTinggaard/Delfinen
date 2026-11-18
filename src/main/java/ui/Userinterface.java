@@ -1,15 +1,10 @@
 package ui;
 
-import domainmodel.Chairman;
 import domainmodel.Controller;
 import domainmodel.Member;
-import domainmodel.SwimClub;
 import domainmodel.MemberType;
 import domainmodel.SwimDisciplin;
-
 import java.util.ArrayList;
-import java.awt.geom.NoninvertibleTransformException;
-import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
