@@ -1,4 +1,4 @@
-package uI;
+package ui;
 
 public class Userinterface {
 }
