@@ -72,4 +72,5 @@ public class Member {
         LocalDate birthday = getBirthdate();
         return (int) ChronoUnit.YEARS.between(birthday, today);
     }
+
 }
