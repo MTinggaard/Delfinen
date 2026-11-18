@@ -4,6 +4,7 @@ import domainmodel.Controller;
 import domainmodel.Member;
 import domainmodel.MemberType;
 import domainmodel.SwimDisciplin;
+
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -23,9 +24,9 @@ public class Userinterface {
         System.out.println("Velkommen til Delfinen svømmeklub!");
         printMenu();
         String choice = scanner.nextLine().trim();
-        controller.getChairman().createMember("assk", LocalDate.of(2003,11,18), EXERCISEER, new ArrayList<SwimDisciplin>());
-        controller.getChairman().createMember("Gunnerstav",LocalDate.of(2004,4,18) , EXERCISEER, new ArrayList<SwimDisciplin>());
-        controller.getChairman().createMember("Mikker", LocalDate.of(2004,1,12), EXERCISEER, new ArrayList<SwimDisciplin>());
+        controller.getChairman().createMember("assk", LocalDate.of(2003, 11, 18), EXERCISEER, null);
+        controller.getChairman().createMember("Gunnerstav", LocalDate.of(2004, 4, 18), EXERCISEER, null);
+        controller.getChairman().createMember("Mikker", LocalDate.of(2004, 1, 12), EXERCISEER, null);
 
         switch (choice) {
             case "1" -> {
@@ -147,15 +148,15 @@ public class Userinterface {
         }
     }
 
-    private void treasurerView ()
-    {
+    private void treasurerView() {
         System.out.println("kasserens funktioner");
         System.out.println("1. se alle medlemers betaling");
         System.out.println("2. rediger medlemmers betaling");
         String choice = scanner.nextLine().trim();
-        switch (choice){
+        switch (choice) {
             case "1" -> showMembershipFees();
             case "2" -> editPayment();
+            default -> System.out.println("den komando kendes ikke");
         }
     }
 
@@ -198,14 +199,16 @@ public class Userinterface {
                     + controller.getMemberShipFee(member) + " kr.");
         }
     }
-    public void editPayment(){
+
+    public void editPayment() {
         System.out.println("søg for et medlem med medlems id");
-        int medlemsnummer = scanner.nextInt();
-        for(Member member:controller.getMemberList()){
-            if(controller.getMemberList().contains(medlemsnummer)){
+        int memberShipNumber = scanner.nextInt();
+        for (Member member : controller.getMemberList()) {
+            if (member.getMemberNumber()==memberShipNumber) {
                 controller.memberHasPayed(member);
             } else {
-                System.out.println("findes ikke et medlem med det medlems nummer");}
+                System.out.println("findes ikke et medlem med det medlems nummer");
+            }
         }
 
     }
