@@ -6,8 +6,10 @@ public class Treasurer {
     public Treasurer(SwimClub swimClub) {
         this.swimClub = swimClub;
     }
-    public void showMembershipFees(){
-        for(Member members : member)
-        {System.out.println();}
+
+    public void showMembershipFees() {
+        for (Member member : swimClub.getMembers()) {
+            System.out.println(member.getName() + "(" + member.getMemberNumber() + "): " + member.getMemberShipFee() + "kr.");
+        }
     }
 }
