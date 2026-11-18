@@ -1,5 +1,6 @@
 package domainmodel;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Controller {
@@ -11,6 +12,7 @@ private Treasurer treasurer;
         this.swimClub = new SwimClub("Svømmeklubben");
         this.chairman = new Chairman(swimClub);
         this.treasurer = new Treasurer(swimClub);
+        private Trainer trainer = new Trainer(swimClub);
     }
 
     public ArrayList<Member> getMemberList() {
@@ -19,5 +21,11 @@ private Treasurer treasurer;
 
     public boolean isJunior(Member member) {
         return chairman.isJunior(member);
+    }
+
+
+
+    public Member createMember(String name, LocalDate birthdate, MemberType memberType, ArrayList<SwimDisciplin> swimDiscipline){
+        return chairman.createMember(name, birthdate, memberType, swimDiscipline);
     }
 }

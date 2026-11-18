@@ -4,11 +4,10 @@ import java.util.ArrayList;
 
 public class SwimClub {
     private String name;
-    private ArrayList<Member> members;
+    private ArrayList<Member> members = new ArrayList<>();
 
-    public SwimClub(String name) {
+    public SwimClub(String name){
         this.name = name;
-        this.members = new ArrayList<>();
     }
 
     public void addMember(Member member) {
@@ -19,7 +18,7 @@ public class SwimClub {
         return members.size();
     }
 
-    public ArrayList<Member> getMembers(){
+    public ArrayList<Member> getMembers() {
         return members;
     }
 }
