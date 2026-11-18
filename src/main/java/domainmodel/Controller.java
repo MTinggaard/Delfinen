@@ -7,12 +7,11 @@ public class Controller {
 private SwimClub swimClub;
 private Chairman chairman;
 private Treasurer treasurer;
-
+    private Trainer trainer = new Trainer(swimClub);
     public Controller() {
         this.swimClub = new SwimClub("Svømmeklubben");
         this.chairman = new Chairman(swimClub);
         this.treasurer = new Treasurer(swimClub);
-        private Trainer trainer = new Trainer(swimClub);
     }
 
     public ArrayList<Member> getMemberList() {
