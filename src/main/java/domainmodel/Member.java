@@ -14,13 +14,27 @@ public class Member {
     private ArrayList<SwimResult> results;
 
     public Member(int memberNumber, String name, LocalDate birthdate, MemberType memberType, ArrayList<SwimDisciplin> swimDisciplin) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Navn må ikke være tomt");
+        }
+
+        if (birthdate == null) {
+            throw new IllegalArgumentException("Fødselsdato skal udfyldes");
+        }
+
+        if (birthdate.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Fødselsdato må ikke være i fremtiden");
+        }
+
+        if (memberType == null) {
+            throw new IllegalArgumentException("Medlemstype skal udfyldes");
+        }
+
         this.memberNumber = memberNumber;
         this.name = name;
         this.birthdate = birthdate;
         this.memberType = memberType;
-        this.memberShipFee = memberShipFee;
         this.swimDisciplin = swimDisciplin;
-        this.results = results;
     }
 
     public int getMemberNumber() {
