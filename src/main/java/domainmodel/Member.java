@@ -54,6 +54,6 @@ public class Member {
     public int getAge(){
         LocalDate today = LocalDate.now();
         LocalDate birthday = getBirthdate();
-        return (int) ChronoUnit.YEARS.between(today, birthday);
+        return (int) ChronoUnit.YEARS.between(birthday, today);
     }
 }
