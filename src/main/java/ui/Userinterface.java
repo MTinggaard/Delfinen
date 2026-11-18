@@ -24,34 +24,22 @@ public class Userinterface {
 
         boolean loggedIn = false;
         System.out.println("Velkommen til Delfinen svømmeklub!");
-        while (!loggedIn) {
-            System.out.println("             Login                ");
+        while (running) {
+            System.out.println("Login");
+
             System.out.print("Brugernavn: ");
             String username = scanner.nextLine().strip().toLowerCase();
+
             System.out.print("Password: ");
-            String password = scanner.nextLine().strip().toLowerCase();
-            controller.setLoggedInUser(username, password);
+            String password = scanner.nextLine().strip();
             System.out.println();
 
+            controller.setLoggedInUser(username, password);
+
             switch (controller.getLoggedInUser()) {
-                case CHAIRMAN -> {
-                    System.out.println("Login lykkedes!");
-                    System.out.println("Velkommen " + controller.getLoggedInUser() + "\n");
-                    showChairmanMenu();
-                    loggedIn = true;
-                }
-                case TREASURER -> {
-                    System.out.println("Login lykkedes!");
-                    System.out.println("Velkommen " + controller.getLoggedInUser() + "\n");
-                    treasurerMenu();
-                    loggedIn = true;
-                }
-                case TRAINER ->  {
-                    System.out.println("Login lykkedes!");
-                    System.out.println("Velkommen " + controller.getLoggedInUser() + "\n");
-                    trainerMenu();
-                    loggedIn = true;
-                }
+                case CHAIRMAN -> showChairmanMenu();
+                case TREASURER -> treasurerMenu();
+                case TRAINER -> trainerMenu();
                 default -> System.out.println("Ugyldigt login. Prøv igen.");
             }
         }
@@ -61,16 +49,23 @@ public class Userinterface {
     }
 
     private void showChairmanMenu() {
-        System.out.println("========== FORMAND ==========");
-        System.out.println("1: Opret medlem");
-        System.out.println("2: Se alle medlemmer");
-        System.out.println("3: Stop programmet");
+        boolean inMenu = true;
 
-        String choice = scanner.nextLine().trim();
-        switch (choice) {
-            case "1" -> createMember();
-            case "2" -> showMemberList();
-            case "3" -> running = false;
+        while(inMenu) {
+            System.out.println("========== FORMAND ==========");
+            System.out.println("1: Opret medlem");
+            System.out.println("2: Se alle medlemmer");
+            System.out.println("3: Log ud");
+            System.out.println("0: Stop programmet");
+
+            String choice = scanner.nextLine().trim();
+            switch (choice) {
+                case "1" -> createMember();
+                case "2" -> showMemberList();
+                case "3" -> inMenu = false;
+                case "0" -> running = false;
+                default -> System.out.println("Ugyldigt valg");
+            }
         }
     }
 
@@ -194,14 +189,20 @@ public class Userinterface {
     }
 
     private void treasurerMenu() {
-        System.out.println("========== Kasserer ==========");
-        System.out.println("1. se alle medlemers betaling");
-        System.out.println("2. rediger medlemmers betaling");
-        String choice = scanner.nextLine().trim();
-        switch (choice) {
-            case "1" -> showMembershipFees();
-            case "2" -> editPayment();
-            default -> System.out.println("den komando kendes ikke");
+        boolean inMenu = true;
+
+        while(inMenu) {
+            System.out.println("========== Kasserer ==========");
+            System.out.println("1. se alle medlemers betaling");
+            System.out.println("2. rediger medlemmers betaling");
+            System.out.println("0. Log ud");
+            String choice = scanner.nextLine().trim();
+            switch (choice) {
+                case "1" -> showMembershipFees();
+                case "2" -> editPayment();
+                case "0" -> inMenu = false;
+                default -> System.out.println("den komando kendes ikke");
+            }
         }
     }
 
