@@ -1,4 +1,4 @@
 package domainmodel;
 
-public class SvimClub {
+public class SwimClub {
 }
