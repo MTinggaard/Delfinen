@@ -24,9 +24,9 @@ public class Userinterface {
         System.out.println("Velkommen til Delfinen svømmeklub!");
         printMenu();
         String choice = scanner.nextLine().trim();
-        controller.getChairman().createMember("assk", LocalDate.of(2003, 11, 18), EXERCISEER, null);
-        controller.getChairman().createMember("Gunnerstav", LocalDate.of(2004, 4, 18), EXERCISEER, null);
-        controller.getChairman().createMember("Mikker", LocalDate.of(2004, 1, 12), EXERCISEER, null);
+        controller.getChairman().createMember("Ask", LocalDate.of(2003, 11, 18), EXERCISEER, null);
+        controller.getChairman().createMember("Gustav", LocalDate.of(2004, 4, 23), EXERCISEER, null);
+        controller.getChairman().createMember("Mikkel", LocalDate.of(2004, 9, 23), EXERCISEER, null);
 
         switch (choice) {
             case "1" -> {
@@ -68,6 +68,7 @@ public class Userinterface {
         switch (choice) {
             case "1" -> createMember();
             case "2" -> showMemberList();
+            case "3" -> running = false;
         }
     }
 
@@ -79,9 +80,9 @@ public class Userinterface {
         LocalDate birthdate = readDate("Fødselsdato (\"dd-mm-åååå\"): ");
 
         System.out.println("Vælg medlemstype:");
-        System.out.println("\t 1. Passiv");
-        System.out.println("\t 2. Motonist");
-        System.out.println("\t 3. Konkurrencesvømmer");
+        System.out.println("\t1. Passiv");
+        System.out.println("\t2. Motonist");
+        System.out.println("\t3. Konkurrencesvømmer");
         MemberType memberType = MemberType.PASSIVE;
         boolean ask = true;
         while (ask) {
@@ -113,6 +114,7 @@ public class Userinterface {
             String input = scanner.nextLine();
             String[] choices = input.split(",");
             for (String choice : choices) {
+                choice = choice.strip();
                 if (choice.equals("1")) {
                     swimDiscipline.add(SwimDisciplin.CRAWL);
                 }
@@ -120,15 +122,28 @@ public class Userinterface {
                     swimDiscipline.add(BREASTSTROKE);
                 }
                 if (choice.equals("3")) {
-                    swimDiscipline.add(SwimDisciplin.BACKCRAWL);
+                    swimDiscipline.add(SwimDisciplin.BACKSTROKE);
                 }
                 if (choice.equals("4")) {
                     swimDiscipline.add(SwimDisciplin.BUTTERFLY);
                 }
             }
         }
-
-        controller.createMember(name, birthdate, memberType, swimDiscipline);
+        try {
+            Member newMember = controller.createMember(name, birthdate, memberType, swimDiscipline);
+            System.out.println("Medlem oprettet:");
+            System.out.println(" - Medlemsnummer: " + newMember.getMemberNumber());
+            System.out.println(" - Navn: " + newMember.getName());
+            System.out.println(" - Fødselsdato: " + newMember.getBirthdate().format(formatter));
+            System.out.println(" - Medlemstype: " + newMember.getMemberType());
+            if (newMember.getMemberType()==MemberType.COMPETITIVE){
+                System.out.print(" - Svømmediscipliner: ");
+                System.out.println(newMember.getSwimDisciplin().toString().replace("[", "").replace("]", ""));
+            }
+            System.out.println();
+        } catch (IllegalArgumentException e){
+            System.out.println(e.getMessage());
+        }
     }
 
     private LocalDate readDate(String prompt) {
@@ -170,6 +185,9 @@ public class Userinterface {
         if (members.isEmpty()) {
             System.out.println("Der er ingen registrerede medlemmer");
         } else {
+            System.out.printf("%-6s %-20s %-10s %-10s %-20s%n", "Nr.", "Navn", "Alder", "Hold", "Type");
+            System.out.println("-----------------------------------------------------------");
+
             for (Member member : members) {
                 String seniorOrJunior;
                 String memberType;
@@ -186,10 +204,14 @@ public class Userinterface {
                 } else {
                     memberType = "Konkurrencesvømmer";
                 }
-
-                System.out.println(member.getMemberNumber() + ", " + member.getName() + ", "
-                        + member.getAge() + " år, " + seniorOrJunior + ", " + memberType);
+                System.out.printf("%-6d %-20s %-10s %-10s %-20s%n",
+                        member.getMemberNumber(),
+                        member.getName(),
+                        member.getAge() + " år",
+                        seniorOrJunior,
+                        memberType);
             }
+            System.out.println();
         }
     }
 
