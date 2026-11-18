@@ -86,6 +86,25 @@ public class ChairmanTest {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @Test
     void memberUnder18IsJunior() {
         Member member = chairman.createMember("Anna", LocalDate.now().minusYears(17),
