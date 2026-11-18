@@ -7,7 +7,11 @@ public class SwimResult {
     private SwimDisciplin disciplin;
     private int time;
     private LocalDate date;
-
+public SwimResult(SwimDisciplin disciplin, int time, LocalDate date){
+    this.disciplin=disciplin;
+    this.time = time;
+    this.date = date;
+}
 
 
     public SwimDisciplin getDisciplin(){
@@ -21,4 +25,6 @@ public class SwimResult {
     public LocalDate getDate(){
         return date;
     }
+
+
 }

@@ -67,10 +67,21 @@ public class Member {
         return results;
     }
 
-    public int getAge(){
+    public int getAge() {
         LocalDate today = LocalDate.now();
         LocalDate birthday = getBirthdate();
         return (int) ChronoUnit.YEARS.between(birthday, today);
     }
+
+    public SwimResult getResultFor(SwimDisciplin disciplin) {
+        for (SwimResult result : results) {
+            if (result.getDisciplin() == disciplin) {
+                return result;
+            }
+        }
+        return null;
+    }
+
+    
 
 }
