@@ -2,8 +2,10 @@ package ui;
 
 import domainmodel.Chairman;
 import domainmodel.Controller;
+import domainmodel.Member;
 import domainmodel.SwimClub;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Userinterface {
@@ -55,6 +57,25 @@ public class Userinterface {
 
     private void trainerView(){
 
+    }
+
+    public void showMemberList() {
+        ArrayList<Member> members = controller.getMemberList();
+
+        if (members.isEmpty()) {
+            System.out.println("Der er ingen registrerede medlemmer");
+        } else {
+            for (Member member : members) {
+                String seniorOrJunior;
+                if (controller.isJunior(member)) {
+                    seniorOrJunior = "Junior";
+                } else {
+                    seniorOrJunior = "Senior";
+                }
+                System.out.println(member.getMemberNumber() + ", " + member.getName() + ", "
+                        + member.getAge() + " år, " + seniorOrJunior + ", " + member.getMemberType());
+            }
+        }
     }
 
 }

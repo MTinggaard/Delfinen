@@ -16,20 +16,11 @@ public class Chairman {
         return member;
     }
 
-    public void getMemberList() {
-        if (swimClub.getMemberCount() == 0) {
-            System.out.println("Der er ingen registrerede medlemmer");
-        } else {
-            for (Member member : swimClub.getMembers()) {
-                String seniorOrJunior;
-                if (member.getAge() < 18) {
-                    seniorOrJunior = "Junior";
-                } else {
-                    seniorOrJunior = "Senior";
-                }
-                System.out.println(member.getMemberNumber() + ", " + member.getName() + ", "
-                        + member.getAge() + " år, " + seniorOrJunior + ", " + member.getMemberType());
-            }
-        }
+    public ArrayList<Member> getMemberList() {
+        return swimClub.getMembers();
+    }
+
+    public boolean isJunior(Member member) {
+        return member.getAge() < 18;
     }
 }
