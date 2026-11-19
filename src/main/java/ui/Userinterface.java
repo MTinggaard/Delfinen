@@ -8,6 +8,7 @@ import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 import java.time.format.DateTimeFormatter;
 
+import static domainmodel.MemberType.COMPETITIVE;
 import static domainmodel.MemberType.EXERCISEER;
 import static domainmodel.SwimDisciplin.BREASTSTROKE;
 
@@ -224,7 +225,7 @@ public class Userinterface {
     }
 
     public void showMemberList() {
-        ArrayList<Member> members = controller.getMemberList();
+        ArrayList<Member> members = controller.getMemberList(COMPETITIVE);
 
         if (members.isEmpty()) {
             System.out.println("Der er ingen registrerede medlemmer");
@@ -260,7 +261,7 @@ public class Userinterface {
     }
 
     public void showMembershipFees() {
-        for (Member member : controller.getMemberList()) {
+        for (Member member : controller.getMemberList(null)) {
             System.out.println(member.getName() + " (" + member.getMemberNumber() + "): "
                     + controller.getMemberShipFee(member) + " kr. har de betalt:" + translatePaid(controller.getPaidInfo(member)));
         }
@@ -272,7 +273,7 @@ public class Userinterface {
         System.out.println("søg for et medlem med medlems id");
         int memberShipNumber = scanner.nextInt();
         scanner.nextLine();
-        for (Member member : controller.getMemberList()) {
+        for (Member member : controller.getMemberList(null)) {
             if (member.getMemberNumber() == memberShipNumber) {
                 chosenMember = member;
                 fundet = true;
