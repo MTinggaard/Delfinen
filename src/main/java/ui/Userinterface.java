@@ -277,21 +277,22 @@ public class Userinterface {
                 chosenMember = member;
                 fundet = true;
             }
-            if (!fundet) {
-                System.out.println("findes ikke et medlem med det medlems nummer");
-            }
-            if (fundet) {
-                System.out.println("du har valgt " + chosenMember.getName() + ". person id:" + chosenMember.getMemberNumber() + ". " + controller.getMemberShipFee(chosenMember) + "Kr: " + translatePaid(controller.getPaidInfo(chosenMember)));
-                System.out.println("ville du ændre hans status til betalt (ja/nej)");
-                String comand = scanner.nextLine().toLowerCase().trim();
-                switch (comand) {
-                    case "ja" -> controller.setMemberHasPayed(chosenMember);
-                    case "nej" -> System.out.println("ingenting er blevet ændret");
-                    default -> System.out.println("den komando kan ikke bruges");
-                }
-                System.out.println(chosenMember.getName() + ". " + chosenMember.getMemberNumber() + ". " + controller.getMemberShipFee(chosenMember) + "kr: " + translatePaid(controller.getPaidInfo(chosenMember)));
-            }
         }
+        if (!fundet) {
+            System.out.println("findes ikke et medlem med det medlems nummer");
+        }
+        if (fundet) {
+            System.out.println("du har valgt " + chosenMember.getName() + ". person id:" + chosenMember.getMemberNumber() + ". " + controller.getMemberShipFee(chosenMember) + "Kr: " + translatePaid(controller.getPaidInfo(chosenMember)));
+            System.out.println("ville du ændre hans status til betalt (ja/nej)");
+            String comand = scanner.nextLine().toLowerCase().trim();
+            switch (comand) {
+                case "ja" -> controller.setMemberHasPayed(chosenMember);
+                case "nej" -> System.out.println("ingenting er blevet ændret");
+                default -> System.out.println("den komando kan ikke bruges");
+            }
+            System.out.println(chosenMember.getName() + ". " + chosenMember.getMemberNumber() + ". " + controller.getMemberShipFee(chosenMember) + "kr: " + translatePaid(controller.getPaidInfo(chosenMember)));
+        }
+
 
     }
 
