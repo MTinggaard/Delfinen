@@ -9,8 +9,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TreasurerTest {
 
+
     private Member createMember(int age, MemberType type) {
         return new Member(1, "Test", LocalDate.now().minusYears(age), type, new ArrayList<>());
+    }
+
+    @Test
+    void active15YearOldPays1200() {
+        int age = 15;
+        Member member = createMember(15, MemberType.PASSIVE);
+        MemberShipFee fee = member.getMemberShipFee();
+        assertEquals(500, fee.getPrice());
     }
 
     @Test
@@ -53,10 +62,36 @@ class TreasurerTest {
     }
 
     @Test
-    void active15YearOldPays1200() {
-        Member member = createMember(15, MemberType.PASSIVE);
-        MemberShipFee fee = member.getMemberShipFee();
-        assertEquals(500, fee.getPrice());
+    void newMemberStartsAsNotPayed(){
+        SwimClub swimClub = new SwimClub("guldbar");
+        Chairman chairman = new Chairman(swimClub);
+        Treasurer treasurer = new Treasurer(swimClub);
+       Member member = chairman.createMember("gustav",LocalDate.of(2003,12,12),MemberType.PASSIVE,null);
+
+        assertFalse(treasurer.getPaidinfo(member));
+    }
+    @Test
+    void setMemberAsPayed(){
+        SwimClub swimClub = new SwimClub("guldbar");
+        Chairman chairman = new Chairman(swimClub);
+        Treasurer treasurer = new Treasurer(swimClub);
+        Member member = chairman.createMember("gustav",LocalDate.of(2003,12,12),MemberType.PASSIVE,null);
+
+        treasurer.setMemberPayed(member);
+
+        assertTrue(treasurer.getPaidinfo(member));
+    }
+    @Test
+    void tresuererReturnsPrice(){
+        SwimClub swimClub = new SwimClub("guldbar");
+        Chairman chairman = new Chairman(swimClub);
+        Treasurer treasurer = new Treasurer(swimClub);
+        Member member = chairman.createMember("gustav",LocalDate.of(2003,12,12),MemberType.PASSIVE,null);
+
+        double fee = treasurer.getMembershipFee(member);
+        //we know that it is going to be 500 since he is a pasiv member
+
+        assertEquals(500,fee);
     }
 
 

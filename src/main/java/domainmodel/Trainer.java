@@ -1,5 +1,7 @@
 package domainmodel;
 
+import java.util.ArrayList;
+
 public class Trainer {
     private SwimClub swimClub;
 
@@ -19,5 +21,26 @@ public class Trainer {
             return RegistrationOutcome.NOT_COMPETITIVE;
         }
         return member.registerResult(newResult);
+    }
+
+    public ArrayList<Member> getJuniorMembers() {
+        ArrayList<Member> juniorMembers = new ArrayList<>();
+
+        for (Member member : swimClub.getMembers()) {
+            if (member.getMemberType() == MemberType.COMPETITIVE && member.getAge() < 18) {
+                juniorMembers.add(member);
+            }
+        }
+        return juniorMembers;
+    }
+    public ArrayList<Member> getSeniorMembers() {
+        ArrayList<Member> seniorMembers = new ArrayList<>();
+
+        for (Member member : swimClub.getMembers()) {
+            if (member.getMemberType() == MemberType.COMPETITIVE && member.getAge() >= 18) {
+                seniorMembers.add(member);
+            }
+        }
+        return seniorMembers;
     }
 }

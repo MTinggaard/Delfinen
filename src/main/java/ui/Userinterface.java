@@ -53,18 +53,53 @@ public class Userinterface {
             System.out.println("========== TRÆNER ==========");
             System.out.println("1: Registrer et trænings resultat");
             System.out.println("2: Registrer et stævne resultat");
-            System.out.println("3: Log ud");
-            System.out.println("0: Stop programmet");
+            System.out.println("3: Se juniorholdet");
+            System.out.println("4: Se seniorholdet");
+            System.out.println("0: Log ud");
+
 
 
             String choice = scanner.nextLine().trim();
             switch (choice) {
                 case "1" -> registerTrainingTime();
                 case "2" -> registerCompetitionResult();
-                case "3" -> inMenu = false;
-                case "0" -> running = false;
+                case "3" -> showJuniorTeam();
+                case "4" -> showSeniorTeam();
+                case "0" -> inMenu = false;
                 default -> System.out.println("Ugyldigt valg");
             }
+        }
+    }
+
+    public void showJuniorTeam() {
+        ArrayList<Member> members = controller.getJuniorMembers();
+
+        if (members.isEmpty()) {
+            System.out.println("Der er ingen registrerede juniore");
+        } else {
+            System.out.printf("%-6s %-20s %-10s %s%n", "Nr.", "Navn", "Alder", "Discipliner");
+            System.out.println("-----------------------------------------------------------");
+
+            for (Member member : members) {
+                System.out.printf("%-6d %-20s %-10s %s%n", member.getMemberNumber(), member.getName(), member.getAge() + " år", member.getSwimDisciplin());
+            }
+            System.out.println();
+        }
+    }
+
+    public void showSeniorTeam() {
+        ArrayList<Member> members = controller.getSeniorMembers();
+
+        if (members.isEmpty()) {
+            System.out.println("Der er ingen registrerede seniore");
+        } else {
+            System.out.printf("%-6s %-20s %-10s %s%n", "Nr.", "Navn", "Alder", "Discipliner");
+            System.out.println("-----------------------------------------------------------");
+
+            for (Member member : members) {
+                System.out.printf("%-6d %-20s %-10s %s%n", member.getMemberNumber(), member.getName(), member.getAge() + " år", member.getSwimDisciplin());
+            }
+            System.out.println();
         }
     }
 
@@ -301,19 +336,9 @@ public class Userinterface {
 
     public int convertTimeToHundredths(String timeText) {
         String[] parts = timeText.split(":");
-
-        if(timeText.isBlank() || parts.length != 2) {
-            throw new IllegalArgumentException("Ugyldigt tidsformat");
-        }
         int minutes = Integer.parseInt(parts[0]);
         String[] secondParts = parts[1].split("\\.");
-        if(secondParts.length < 2){
-            throw new IllegalArgumentException("Ugyldigt tidsformat");
-        }
         int seconds = Integer.parseInt(secondParts[0]);
-        if(seconds < 0 || seconds > 59){
-            throw new IllegalArgumentException("Ugyldigt tidsformat");
-        }
         int hundredths = Integer.parseInt(secondParts[1]);
 
         return minutes * 6000 + seconds * 100 + hundredths;
