@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MemberShipFeeTest {
+class TreasurerTest {
 
     private Member createMember(int age, MemberType type) {
         return new Member(1, "Test", LocalDate.now().minusYears(age), type, new ArrayList<>());
