@@ -19,8 +19,40 @@ private Role loggedInUser;
     }
 
 
-    public ArrayList<Member> getMemberList() {
-        return chairman.getMemberList();
+    public ArrayList<Member> getMemberList(MemberType memberType) {
+        ArrayList<Member> members = new ArrayList<>();
+        if(memberType == null) {
+            return chairman.getMemberList();
+        }
+        switch (memberType){
+            case PASSIVE -> {
+                for(Member member : chairman.getMemberList()){
+                    if(member.getMemberType().equals(MemberType.PASSIVE)){
+                        members.add(member);
+                    }
+                }
+                return members;
+            }
+            case EXERCISEER -> {
+                for(Member member : chairman.getMemberList()){
+                    if(member.getMemberType().equals(MemberType.EXERCISEER)){
+                        members.add(member);
+                    }
+                }
+                return members;
+            }
+            case COMPETITIVE -> {
+                for(Member member : chairman.getMemberList()){
+                    if(member.getMemberType().equals(MemberType.COMPETITIVE)){
+                        members.add(member);
+                    }
+                }
+                return members;
+            }
+            default -> {
+                return chairman.getMemberList();
+            }
+        }
     }
 
     public boolean isJunior(Member member) {
@@ -63,5 +95,13 @@ private Role loggedInUser;
 
     public Member findMember(int memberNumber) {
         return swimClub.findMember(memberNumber);
+    }
+
+    public ArrayList<Member> getJuniorMembers(){
+        return trainer.getJuniorMembers();
+    }
+
+    public ArrayList<Member> getSeniorMembers(){
+        return trainer.getSeniorMembers();
     }
 }

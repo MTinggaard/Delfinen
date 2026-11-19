@@ -8,6 +8,7 @@ import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 import java.time.format.DateTimeFormatter;
 
+import static domainmodel.MemberType.COMPETITIVE;
 import static domainmodel.MemberType.EXERCISEER;
 import static domainmodel.SwimDisciplin.BREASTSTROKE;
 
@@ -39,29 +40,60 @@ public class Userinterface {
             switch (controller.getLoggedInUser()) {
                 case CHAIRMAN -> showChairmanMenu();
                 case TREASURER -> treasurerMenu();
-                case TRAINER -> showTrainerMenu();
+                case TRAINER -> trainerMenu();
                 default -> System.out.println("Ugyldigt login. Prøv igen.");
             }
         }
     }
 
-    private void showTrainerMenu() {
+    private void trainerMenu() {
         boolean inMenu = true;
 
         while (inMenu) {
-            System.out.println("========== TRÆNER ==========");
-            System.out.println("1: Registrer Trænings Resultat");
-            System.out.println("3: Log ud");
-            System.out.println("0: Stop programmet");
-
-
+            System.out.println("========= Trainer =========");
+            System.out.println("1. Se juniorholdet");
+            System.out.println("2. Se seniorholdet");
+            System.out.println("0. Log ud");
             String choice = scanner.nextLine().trim();
+
             switch (choice) {
-                case "1" -> registerTrainingTime();
-                case "3" -> inMenu = false;
-                case "0" -> running = false;
+                case "1" -> showJuniorTeam();
+                case "2" -> showSeniorTeam();
+                case "0" -> inMenu = false;
                 default -> System.out.println("Ugyldigt valg");
             }
+        }
+    }
+
+    public void showJuniorTeam() {
+        ArrayList<Member> members = controller.getJuniorMembers();
+
+        if (members.isEmpty()) {
+            System.out.println("Der er ingen registrerede juniore");
+        } else {
+            System.out.printf("%-6s %-20s %-10s %s%n", "Nr.", "Navn", "Alder", "Discipliner");
+            System.out.println("-----------------------------------------------------------");
+
+            for (Member member : members) {
+                System.out.printf("%-6d %-20s %-10s %s%n", member.getMemberNumber(), member.getName(), member.getAge() + " år", member.getSwimDisciplin());
+            }
+            System.out.println();
+        }
+    }
+
+    public void showSeniorTeam() {
+        ArrayList<Member> members = controller.getSeniorMembers();
+
+        if (members.isEmpty()) {
+            System.out.println("Der er ingen registrerede seniore");
+        } else {
+            System.out.printf("%-6s %-20s %-10s %s%n", "Nr.", "Navn", "Alder", "Discipliner");
+            System.out.println("-----------------------------------------------------------");
+
+            for (Member member : members) {
+                System.out.printf("%-6d %-20s %-10s %s%n", member.getMemberNumber(), member.getName(), member.getAge() + " år", member.getSwimDisciplin());
+            }
+            System.out.println();
         }
     }
 
@@ -224,7 +256,7 @@ public class Userinterface {
     }
 
     public void showMemberList() {
-        ArrayList<Member> members = controller.getMemberList();
+        ArrayList<Member> members = controller.getMemberList(COMPETITIVE);
 
         if (members.isEmpty()) {
             System.out.println("Der er ingen registrerede medlemmer");
@@ -260,7 +292,7 @@ public class Userinterface {
     }
 
     public void showMembershipFees() {
-        for (Member member : controller.getMemberList()) {
+        for (Member member : controller.getMemberList(null)) {
             System.out.println(member.getName() + " (" + member.getMemberNumber() + "): "
                     + controller.getMemberShipFee(member) + " kr. har de betalt:" + translatePaid(controller.getPaidInfo(member)));
         }
@@ -272,7 +304,7 @@ public class Userinterface {
         System.out.println("søg for et medlem med medlems id");
         int memberShipNumber = scanner.nextInt();
         scanner.nextLine();
-        for (Member member : controller.getMemberList()) {
+        for (Member member : controller.getMemberList(null)) {
             if (member.getMemberNumber() == memberShipNumber) {
                 chosenMember = member;
                 fundet = true;
