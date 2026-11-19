@@ -6,7 +6,7 @@ public class SwimClub {
     private String name;
     private ArrayList<Member> members = new ArrayList<>();
 
-    public SwimClub(String name){
+    public SwimClub(String name) {
         this.name = name;
     }
 
@@ -21,4 +21,14 @@ public class SwimClub {
     public ArrayList<Member> getMembers() {
         return members;
     }
+
+    public Member findMember(int memberNumber) {
+        for (Member member : members) {
+            if (memberNumber == member.getMemberNumber()) {
+                return member;
+            }
+        }
+        return null;
+    }
+    
 }

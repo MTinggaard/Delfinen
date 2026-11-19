@@ -39,19 +39,36 @@ public class Userinterface {
             switch (controller.getLoggedInUser()) {
                 case CHAIRMAN -> showChairmanMenu();
                 case TREASURER -> treasurerMenu();
-                case TRAINER -> trainerMenu();
+                case TRAINER -> showTrainerMenu();
                 default -> System.out.println("Ugyldigt login. Prøv igen.");
             }
         }
     }
 
-    private void trainerMenu() {
+    private void showTrainerMenu() {
+        boolean inMenu = true;
+
+        while (inMenu) {
+            System.out.println("========== TRÆNER ==========");
+            System.out.println("1: Registrer Trænings Resultat");
+            System.out.println("3: Log ud");
+            System.out.println("0: Stop programmet");
+
+
+            String choice = scanner.nextLine().trim();
+            switch (choice) {
+                case "1" -> registerTrainingTime();
+                case "3" -> inMenu = false;
+                case "0" -> running = false;
+                default -> System.out.println("Ugyldigt valg");
+            }
+        }
     }
 
     private void showChairmanMenu() {
         boolean inMenu = true;
 
-        while(inMenu) {
+        while (inMenu) {
             System.out.println("========== FORMAND ==========");
             System.out.println("1: Opret medlem");
             System.out.println("2: Se alle medlemmer");
@@ -191,7 +208,7 @@ public class Userinterface {
     private void treasurerMenu() {
         boolean inMenu = true;
 
-        while(inMenu) {
+        while (inMenu) {
             System.out.println("========== Kasserer ==========");
             System.out.println("1. se alle medlemers betaling");
             System.out.println("2. rediger medlemmers betaling");
@@ -253,12 +270,85 @@ public class Userinterface {
         System.out.println("søg for et medlem med medlems id");
         int memberShipNumber = scanner.nextInt();
         for (Member member : controller.getMemberList()) {
-            if (member.getMemberNumber()==memberShipNumber) {
+            if (member.getMemberNumber() == memberShipNumber) {
                 controller.getMemberHasPayed(member);
             } else {
                 System.out.println("findes ikke et medlem med det medlems nummer");
             }
         }
 
+    }
+
+    public int convertTimeToHundredths(String timeText) {
+        String[] parts = timeText.split(":");
+        int minutes = Integer.parseInt(parts[0]);
+        String[] secondParts = parts[1].split("\\.");
+        int seconds = Integer.parseInt(secondParts[0]);
+        int hundredths = Integer.parseInt(secondParts[1]);
+
+        return minutes * 6000 + seconds * 100 + hundredths;
+    }
+
+    private String formatTime(int totalHundredths) {
+        int minutes = totalHundredths / 6000;
+        int seconds = (totalHundredths % 6000) / 100;
+        int hundredths = totalHundredths % 100;
+
+        return String.format("%d:%02d.%02d", minutes, seconds, hundredths);
+    }
+
+    private void registerTrainingTime() {
+
+        showMemberList();
+        Member member = null;
+        while (member == null) {
+            System.out.println("Indtast medlemsnummer:");
+            int memberNumber = Integer.parseInt(scanner.nextLine());
+
+            Member found = controller.findMember(memberNumber);
+            if (found == null) {
+                System.out.println("Der findes intet medlem med det nummer. Prøv igen.");
+
+            } else if (found.getMemberType() != MemberType.COMPETITIVE) {
+                System.out.println("Dette medlem er ikke konkurrenceudøver. Prøv igen");
+
+            } else {
+                member = found;
+            }
+
+        }
+
+        SwimDisciplin disciplin = null;
+        while (disciplin == null) {
+            System.out.println("Vælg disciplin:");
+            System.out.println("1. Crawl");
+            System.out.println("2. Brystsvømning");
+            System.out.println("3. Rygcrawl");
+            System.out.println("4. Butterfly");
+            String choice = scanner.nextLine().trim();
+            switch (choice) {
+                case "1" -> disciplin = SwimDisciplin.CRAWL;
+                case "2" -> disciplin = SwimDisciplin.BREASTSTROKE;
+                case "3" -> disciplin = SwimDisciplin.BACKSTROKE;
+                case "4" -> disciplin = SwimDisciplin.BUTTERFLY;
+                default -> System.out.println("Ugyldigt valg. Skriv 1, 2, 3 eller 4.");
+            }
+        }
+        System.out.println("Indtast tid, fx 1:05.32:");
+        int time = convertTimeToHundredths(scanner.nextLine().trim());
+
+        LocalDate date = readDate("Dato (dd-mm-åååå), eller tryk Enter for i dag: ");
+
+        SwimResult result = new SwimResult(disciplin, time, date);
+        RegistrationOutcome outcome = controller.registerResult(member, result);
+
+        switch (outcome) {
+            case NEW_BEST -> System.out.println("Nye bedste tid: " + formatTime(time));
+            case NOT_BETTER -> System.out.println("Tiden er ikke en ny bedste tid.");
+            case NOT_ACTIVE ->
+                    System.out.println("Svømmeren er ikke aktiv i den disciplin. Tiden er ikke registreret.");
+            case NOT_COMPETITIVE ->
+                    System.out.println("Medlemmet er ikke konkurrencesvømmer. Tiden er ikke registreret.");
+        }
     }
 }

@@ -1,8 +1,10 @@
 package domainmodel;
 
 import org.junit.jupiter.api.Test;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class MemberShipFeeTest {
@@ -14,7 +16,7 @@ class MemberShipFeeTest {
     @Test
     void active17YearOldPays1000() {
         Member member = createMember(17, MemberType.COMPETITIVE);
-        MemberShipFee fee = new MemberShipFee(member);
+        MemberShipFee fee = member.getMemberShipFee();
 
         assertEquals(1000, fee.getPrice());
     }
@@ -22,7 +24,7 @@ class MemberShipFeeTest {
     @Test
     void active18YearOldPays1600() {
         Member member = createMember(18, MemberType.COMPETITIVE);
-        MemberShipFee fee = new MemberShipFee(member);
+        MemberShipFee fee = member.getMemberShipFee();
 
         assertEquals(1600, fee.getPrice());
     }
@@ -30,7 +32,7 @@ class MemberShipFeeTest {
     @Test
     void active25YearOldPays1600() {
         Member member = createMember(25, MemberType.COMPETITIVE);
-        MemberShipFee fee = new MemberShipFee(member);
+        MemberShipFee fee = member.getMemberShipFee();
 
         assertEquals(1600, fee.getPrice());
     }
@@ -38,7 +40,7 @@ class MemberShipFeeTest {
     @Test
     void active60YearOldPays1200() {
         Member member = createMember(60, MemberType.COMPETITIVE);
-        MemberShipFee fee = new MemberShipFee(member);
+        MemberShipFee fee = member.getMemberShipFee();
 
         assertEquals(1200, fee.getPrice());
     }
@@ -46,16 +48,14 @@ class MemberShipFeeTest {
     @Test
     void active74YearOldPays1200() {
         Member member = createMember(74, MemberType.COMPETITIVE);
-        MemberShipFee fee = new MemberShipFee(member);
-
+        MemberShipFee fee = member.getMemberShipFee();
         assertEquals(1200, fee.getPrice());
     }
 
     @Test
     void active15YearOldPays1200() {
         Member member = createMember(15, MemberType.PASSIVE);
-        MemberShipFee fee = new MemberShipFee(member);
-
+        MemberShipFee fee = member.getMemberShipFee();
         assertEquals(500, fee.getPrice());
     }
 

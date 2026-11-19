@@ -56,4 +56,12 @@ private Role loggedInUser;
             this.loggedInUser = Role.TRAINER;
         } else this.loggedInUser = Role.DENIEDUSER;
     }
+
+    public RegistrationOutcome registerResult(Member member, SwimResult newResult) {
+        return trainer.registerResult(member, newResult);
+    }
+
+    public Member findMember(int memberNumber) {
+        return swimClub.findMember(memberNumber);
+    }
 }

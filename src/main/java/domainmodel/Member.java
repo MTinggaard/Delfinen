@@ -36,7 +36,7 @@ public class Member {
         this.memberType = memberType;
         this.swimDisciplin = swimDisciplin;
         this.results = new ArrayList<>();
-        this.memberShipFee = new MemberShipFee(this);
+        this.memberShipFee = new MemberShipFee(getAge(), memberType);
     }
 
     public int getMemberNumber() {
@@ -82,6 +82,26 @@ public class Member {
         return null;
     }
 
-    
+    public RegistrationOutcome registerResult(SwimResult newResult) {
+        if (!swimDisciplin.contains(newResult.getDisciplin())) {
+            return RegistrationOutcome.NOT_ACTIVE;
+        }
+        SwimResult oldResult = getResultFor(newResult.getDisciplin());
+        if (oldResult == null) {
+            results.add(newResult);
+            return RegistrationOutcome.NEW_BEST;
+        }
+        if (newResult.getTime() < oldResult.getTime())
+        {
+            results.remove(oldResult);
+            results.add(newResult);
+            return RegistrationOutcome.NEW_BEST;
+        }
+
+        return RegistrationOutcome.NOT_BETTER;
+
+    }
+
+
 
 }
