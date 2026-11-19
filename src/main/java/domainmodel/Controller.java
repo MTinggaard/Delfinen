@@ -89,7 +89,10 @@ private Role loggedInUser;
         } else this.loggedInUser = Role.DENIEDUSER;
     }
 
-    public RegistrationOutcome registerResult(Member member, SwimResult newResult) {
+    public RegistrationOutcome registerResult(Member member, TrainingResult newResult) {
+        return trainer.registerResult(member, newResult);
+    }
+    public RegistrationOutcome registerResult(Member member, CompetitionResult newResult) {
         return trainer.registerResult(member, newResult);
     }
 

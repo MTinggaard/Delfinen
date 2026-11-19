@@ -8,7 +8,13 @@ public class Trainer {
     }
 
 
-    public RegistrationOutcome registerResult(Member member, SwimResult newResult) {
+    public RegistrationOutcome registerResult(Member member, TrainingResult newResult) {
+        if (member.getMemberType() != MemberType.COMPETITIVE) {
+            return RegistrationOutcome.NOT_COMPETITIVE;
+        }
+        return member.registerResult(newResult);
+    }
+    public RegistrationOutcome registerResult(Member member, CompetitionResult newResult) {
         if (member.getMemberType() != MemberType.COMPETITIVE) {
             return RegistrationOutcome.NOT_COMPETITIVE;
         }

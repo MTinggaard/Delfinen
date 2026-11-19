@@ -11,7 +11,8 @@ public class Member {
     private MemberType memberType;
     private MemberShipFee memberShipFee;
     private ArrayList<SwimDisciplin> swimDisciplin;
-    private ArrayList<SwimResult> results;
+    private ArrayList<CompetitionResult> competitionResults = new ArrayList<>();
+    private ArrayList<TrainingResult> trainingResults = new ArrayList<>();
 
     public Member(int memberNumber, String name, LocalDate birthdate, MemberType memberType, ArrayList<SwimDisciplin> swimDisciplin) {
         if (name == null || name.isBlank()) {
@@ -35,7 +36,6 @@ public class Member {
         this.birthdate = birthdate;
         this.memberType = memberType;
         this.swimDisciplin = swimDisciplin;
-        this.results = new ArrayList<>();
         this.memberShipFee = new MemberShipFee(getAge(), memberType);
     }
 
@@ -63,8 +63,12 @@ public class Member {
         return swimDisciplin;
     }
 
-    public ArrayList<SwimResult> getResults() {
-        return results;
+    public ArrayList<CompetitionResult> getCompetitionResults() {
+        return competitionResults;
+    }
+
+    public ArrayList<TrainingResult> getTrainingResults() {
+        return trainingResults;
     }
 
     public int getAge() {
@@ -73,35 +77,51 @@ public class Member {
         return (int) ChronoUnit.YEARS.between(birthday, today);
     }
 
-    public SwimResult getResultFor(SwimDisciplin disciplin) {
-        for (SwimResult result : results) {
-            if (result.getDisciplin() == disciplin) {
-                return result;
+    public TrainingResult getTrainingResultFor(SwimDisciplin disciplin) {
+        ArrayList<TrainingResult> included = new ArrayList<>();
+        for (TrainingResult result : trainingResults) {
+            if (result.getDiscipline().equals(disciplin)) {
+                included.add(result);
             }
         }
-        return null;
+        if(included.isEmpty()){
+            return null;
+        }
+        TrainingResult bestResult = included.getFirst();
+        for (TrainingResult result : included){
+            if(bestResult.getTime() > result.getTime()){
+                bestResult = result;
+            }
+        }
+        return bestResult;
     }
 
-    public RegistrationOutcome registerResult(SwimResult newResult) {
-        if (!swimDisciplin.contains(newResult.getDisciplin())) {
+
+    public RegistrationOutcome registerResult(TrainingResult newResult) {
+        if (!swimDisciplin.contains(newResult.getDiscipline())) {
             return RegistrationOutcome.NOT_ACTIVE;
         }
-        SwimResult oldResult = getResultFor(newResult.getDisciplin());
+        TrainingResult oldResult = getTrainingResultFor(newResult.getDiscipline());
         if (oldResult == null) {
-            results.add(newResult);
+            trainingResults.add(newResult);
             return RegistrationOutcome.NEW_BEST;
         }
-        if (newResult.getTime() < oldResult.getTime())
-        {
-            results.remove(oldResult);
-            results.add(newResult);
+        if (newResult.getTime() < oldResult.getTime()) {
+            trainingResults.remove(oldResult);
+            trainingResults.add(newResult);
             return RegistrationOutcome.NEW_BEST;
         }
 
         return RegistrationOutcome.NOT_BETTER;
-
     }
 
+    public RegistrationOutcome registerResult(CompetitionResult newResult) {
+        if (!swimDisciplin.contains(newResult.getDiscipline())) {
+            return RegistrationOutcome.NOT_ACTIVE;
+        }
+        competitionResults.add(newResult);
+        return RegistrationOutcome.SUCCESS;
+    }
 
 
 }

@@ -51,7 +51,8 @@ public class Userinterface {
 
         while (inMenu) {
             System.out.println("========== TRÆNER ==========");
-            System.out.println("1: Registrer Trænings Resultat");
+            System.out.println("1: Registrer et trænings resultat");
+            System.out.println("2: Registrer et stævne resultat");
             System.out.println("3: Log ud");
             System.out.println("0: Stop programmet");
 
@@ -59,6 +60,7 @@ public class Userinterface {
             String choice = scanner.nextLine().trim();
             switch (choice) {
                 case "1" -> registerTrainingTime();
+                case "2" -> registerCompetitionResult();
                 case "3" -> inMenu = false;
                 case "0" -> running = false;
                 default -> System.out.println("Ugyldigt valg");
@@ -299,9 +301,19 @@ public class Userinterface {
 
     public int convertTimeToHundredths(String timeText) {
         String[] parts = timeText.split(":");
+
+        if(timeText.isBlank() || parts.length != 2) {
+            throw new IllegalArgumentException("Ugyldigt tidsformat");
+        }
         int minutes = Integer.parseInt(parts[0]);
         String[] secondParts = parts[1].split("\\.");
+        if(secondParts.length < 2){
+            throw new IllegalArgumentException("Ugyldigt tidsformat");
+        }
         int seconds = Integer.parseInt(secondParts[0]);
+        if(seconds < 0 || seconds > 59){
+            throw new IllegalArgumentException("Ugyldigt tidsformat");
+        }
         int hundredths = Integer.parseInt(secondParts[1]);
 
         return minutes * 6000 + seconds * 100 + hundredths;
@@ -321,7 +333,14 @@ public class Userinterface {
         Member member = null;
         while (member == null) {
             System.out.println("Indtast medlemsnummer:");
-            int memberNumber = Integer.parseInt(scanner.nextLine());
+            int memberNumber;
+
+            try {
+                memberNumber = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Du skal indtaste et gyldigt medlemsnummer.");
+                continue;
+            }
 
             Member found = controller.findMember(memberNumber);
             if (found == null) {
@@ -357,7 +376,7 @@ public class Userinterface {
 
         LocalDate date = readDate("Dato (dd-mm-åååå), eller tryk Enter for i dag: ");
 
-        SwimResult result = new SwimResult(disciplin, time, date);
+        TrainingResult result = new TrainingResult(disciplin, time, date);
         RegistrationOutcome outcome = controller.registerResult(member, result);
 
         switch (outcome) {
@@ -367,6 +386,96 @@ public class Userinterface {
                     System.out.println("Svømmeren er ikke aktiv i den disciplin. Tiden er ikke registreret.");
             case NOT_COMPETITIVE ->
                     System.out.println("Medlemmet er ikke konkurrencesvømmer. Tiden er ikke registreret.");
+        }
+    }
+
+    private void registerCompetitionResult() {
+
+        showMemberList();
+        Member member = null;
+        while (member == null) {
+            System.out.println("Indtast medlemsnummer:");
+            int memberNumber = Integer.parseInt(scanner.nextLine());
+
+            Member found = controller.findMember(memberNumber);
+            if (found == null) {
+                System.out.println("Der findes intet medlem med det nummer. Prøv igen.");
+
+            } else if (found.getMemberType() != MemberType.COMPETITIVE) {
+                System.out.println("Dette medlem er ikke konkurrenceudøver. Prøv igen");
+
+            } else {
+                member = found;
+            }
+        }
+
+        String competitionName;
+        while (true) {
+            System.out.print("Skriv stævnets navn: ");
+            competitionName = scanner.nextLine();
+            if(!competitionName.isBlank()){
+                break;
+            }
+        }
+
+        SwimDisciplin disciplin = null;
+        while (disciplin == null) {
+            System.out.println("Vælg disciplin:");
+            System.out.println("1. Crawl");
+            System.out.println("2. Brystsvømning");
+            System.out.println("3. Rygcrawl");
+            System.out.println("4. Butterfly");
+            String choice = scanner.nextLine().trim();
+            switch (choice) {
+                case "1" -> disciplin = SwimDisciplin.CRAWL;
+                case "2" -> disciplin = SwimDisciplin.BREASTSTROKE;
+                case "3" -> disciplin = SwimDisciplin.BACKSTROKE;
+                case "4" -> disciplin = SwimDisciplin.BUTTERFLY;
+                default -> System.out.println("Ugyldigt valg. Skriv 1, 2, 3 eller 4.");
+            }
+        }
+
+        int time;
+        while (true){
+            try {
+                System.out.print("Indtast tid, fx 1:05.32: ");
+                time = convertTimeToHundredths(scanner.nextLine().trim());
+                if(time < 1){
+                    throw new IllegalArgumentException("Svømmerens tid kan ikke være negativ");
+                }
+                break;
+            } catch (NumberFormatException e){
+                System.out.println("Du skal indtaste et tid i format fx 1:05.32");
+            }catch (IllegalArgumentException e){
+                System.out.println(e.getMessage());
+            }
+        }
+
+        int placement;
+        while (true){
+            try {
+                System.out.print("Indtast placering i talformat: ");
+                placement = Integer.parseInt(scanner.nextLine());
+                if(placement < 1){
+                    throw new IllegalArgumentException("Svømmerens placering må ikke være negativt");
+                }
+                break;
+            } catch (NumberFormatException e){
+                System.out.println("Du skal indtaste et tal");
+            } catch (IllegalArgumentException e){
+                System.out.println(e.getMessage());
+            }
+        }
+
+        LocalDate date = readDate("Dato (dd-mm-åååå), eller tryk Enter for i dag: ");
+
+        CompetitionResult result = new CompetitionResult(disciplin, time, date, competitionName, placement);
+        RegistrationOutcome outcome = controller.registerResult(member, result);
+
+        switch (outcome) {
+            case NOT_ACTIVE -> System.out.println("Svømmeren er ikke aktiv i den disciplin. Tiden er ikke registreret.");
+            case NOT_COMPETITIVE -> System.out.println("Medlemmet er ikke konkurrencesvømmer. Tiden er ikke registreret.");
+            case SUCCESS -> System.out.println("Tid registreret: " + formatTime(time));
         }
     }
 

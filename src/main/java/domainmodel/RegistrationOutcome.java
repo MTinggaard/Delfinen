@@ -5,4 +5,5 @@ public enum RegistrationOutcome {
     NOT_BETTER,
     NOT_ACTIVE,
     NOT_COMPETITIVE,
+    SUCCESS,
 }
