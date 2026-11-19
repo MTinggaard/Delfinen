@@ -96,4 +96,12 @@ private Role loggedInUser;
     public Member findMember(int memberNumber) {
         return swimClub.findMember(memberNumber);
     }
+
+    public ArrayList<Member> getJuniorMembers(){
+        return trainer.getJuniorMembers();
+    }
+
+    public ArrayList<Member> getSeniorMembers(){
+        return trainer.getSeniorMembers();
+    }
 }
