@@ -262,7 +262,7 @@ public class Userinterface {
     }
 
     public void showMemberList() {
-        ArrayList<Member> members = controller.getMemberList(COMPETITIVE);
+        ArrayList<Member> members = controller.getMemberList(null);
 
         if (members.isEmpty()) {
             System.out.println("Der er ingen registrerede medlemmer");
