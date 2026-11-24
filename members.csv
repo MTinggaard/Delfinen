@@ -1,0 +1,11 @@
+memberNumber;name;birthdate;memberType;swimDisciplin
+1;Ask Haue;2003-11-18;EXERCISEER;null;
+2;Gustav Gilfberg;2004-04-23;EXERCISEER;null;
+3;Mikkel Tinggaard;2004-09-23;EXERCISEER;null;
+4;Asbjørn Rasmussen;2004-11-23;COMPETITIVE;CRAWL,BREASTSTROKE,;
+5;Michael Carlsson;1990-12-24;PASSIVE;null;
+6;Tobias Grundtvig;1973-06-07;COMPETITIVE;CRAWL,BREASTSTROKE,BACKSTROKE,BUTTERFLY,;
+7;Mads Nyborg;1969-01-01;PASSIVE;null;
+8;Michael Phelps;1985-06-30;COMPETITIVE;BUTTERFLY,;
+9;Emilie Beckmann;1997-02-04;COMPETITIVE;BUTTERFLY,;
+10;lasse ;2002-02-19;PASSIVE;null;
