@@ -19,10 +19,6 @@ public class Userinterface {
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     public void startProgram() {
-        controller.getChairman().createMember("Ask", LocalDate.of(2003, 11, 18), EXERCISEER, null);
-        controller.getChairman().createMember("Gustav", LocalDate.of(2004, 4, 23), EXERCISEER, null);
-        controller.getChairman().createMember("Mikkel", LocalDate.of(2004, 9, 23), EXERCISEER, null);
-
         boolean loggedIn = false;
         System.out.println("Velkommen til Delfinen svømmeklub!");
         loadMembers();

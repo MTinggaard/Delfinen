@@ -20,4 +20,19 @@ public enum MemberType {
         }
         return "";
     }
+
+    public String toStringFileHandling(){
+        switch (this){
+            case EXERCISEER -> {
+                return "EXERCISEER";
+            }
+            case PASSIVE -> {
+                return "PASSIVE";
+            }
+            case COMPETITIVE -> {
+                return "COMPETITIVE";
+            }
+        }
+        return "";
+    }
 }

@@ -24,4 +24,22 @@ public enum SwimDisciplin {
         }
         return "";
     }
+
+    public String toStringFileHandling(){
+        switch (this){
+            case CRAWL -> {
+                return "CRAWL";
+            }
+            case BUTTERFLY -> {
+                return "BUTTERFLY";
+            }
+            case BREASTSTROKE -> {
+                return "BREASTSTROKE";
+            }
+            case BACKSTROKE -> {
+                return "BACKSTROKE";
+            }
+        }
+        return "";
+    }
 }

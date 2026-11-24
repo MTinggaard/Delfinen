@@ -32,17 +32,25 @@ public class FileHandler {
     }
 
     private String toCsvLine(Member member) {
-        return member.getMemberNumber() + ";"
+        String csv = member.getMemberNumber() + ";"
                 + member.getName() + ";"
                 + member.getBirthdate() + ";"
-                + member.getMemberType() + ";"
-                + member.getSwimDisciplin() + ";";
+                + member.getMemberType().toStringFileHandling() + ";";
+        if (member.getMemberType() == MemberType.COMPETITIVE) {
+            String swimDisciplins = "";
+            for (SwimDisciplin swimDisciplin : member.getSwimDisciplin()) {
+                swimDisciplins += swimDisciplin.toStringFileHandling() + ",";
+            }
+            csv += swimDisciplins + ";";
+        } else csv += "null;";
+
+        return csv;
     }
 
     private Member parseMember(String line) {
         String[] fields = line.split(";", -1);
 
-        if (fields.length != 5) {
+        if (fields.length != 6) {
             return null;
         }
 
