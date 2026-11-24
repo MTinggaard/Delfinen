@@ -2,13 +2,13 @@ package ui;
 
 import domainmodel.*;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 import java.time.format.DateTimeFormatter;
 
-import static domainmodel.MemberType.COMPETITIVE;
 import static domainmodel.MemberType.EXERCISEER;
 import static domainmodel.SwimDisciplin.BREASTSTROKE;
 
@@ -25,6 +25,7 @@ public class Userinterface {
 
         boolean loggedIn = false;
         System.out.println("Velkommen til Delfinen svømmeklub!");
+        loadMembers();
         while (running) {
             System.out.println("Login");
 
@@ -44,6 +45,7 @@ public class Userinterface {
                 default -> System.out.println("Ugyldigt login. Prøv igen.");
             }
         }
+        saveMembersIfChanged();
     }
 
     private void showTrainerMenu() {
@@ -118,7 +120,10 @@ public class Userinterface {
                 case "1" -> createMember();
                 case "2" -> showMemberList();
                 case "3" -> inMenu = false;
-                case "0" -> running = false;
+                case "0" -> {
+                    inMenu = false;
+                    running = false;
+                }
                 default -> System.out.println("Ugyldigt valg");
             }
         }
@@ -262,7 +267,7 @@ public class Userinterface {
     }
 
     public void showMemberList() {
-        ArrayList<Member> members = controller.getMemberList(null);
+        ArrayList<Member> members = controller.getMemberList();
 
         if (members.isEmpty()) {
             System.out.println("Der er ingen registrerede medlemmer");
@@ -298,7 +303,7 @@ public class Userinterface {
     }
 
     public void showMembershipFees() {
-        for (Member member : controller.getMemberList(null)) {
+        for (Member member : controller.getMemberList()) {
             System.out.println(member.getName() + " (" + member.getMemberNumber() + "): "
                     + controller.getMemberShipFee(member) + " kr. har de betalt:" + translatePaid(controller.getPaidInfo(member)));
         }
@@ -310,7 +315,7 @@ public class Userinterface {
         System.out.println("søg for et medlem med medlems id");
         int memberShipNumber = scanner.nextInt();
         scanner.nextLine();
-        for (Member member : controller.getMemberList(null)) {
+        for (Member member : controller.getMemberList()) {
             if (member.getMemberNumber() == memberShipNumber) {
                 chosenMember = member;
                 fundet = true;
@@ -504,12 +509,30 @@ public class Userinterface {
         }
     }
 
-    public String translatePaid(boolean trueOrFalse) {
-        if (trueOrFalse) {
-            return ("betalt");
-        } else {
-            return ("ikke betalt");
+    public String translatePaid(boolean isPaid) {
+        return isPaid ? "betalt" : "ikke betalt";
+    }
+
+    private void loadMembers() {
+        try {
+            int count = controller.loadMembers();
+            System.out.println(count + " medlem er indlæst.");
+            int skipped = controller.getSkippedLineCount();
+            if (skipped > 0) {
+                System.out.println("Advarsel: " + skipped + " linje(r) i filen kunne ikke læses og er sprunget over.");
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Der er ingen gemt filmsamling endnu – du starter med en tom samling.");
         }
     }
 
+    public void saveMembersIfChanged() {
+        try {
+            if (controller.saveMembersIfChanged()) {
+                System.out.println("Medlemslisten er gemt");
+            } else System.out.println("Ingen ændringer at gemme");
+        } catch (FileNotFoundException e) {
+            System.out.println("Medlemslisten kunne ikke gemmes: " + e.getMessage());
+        }
+    }
 }

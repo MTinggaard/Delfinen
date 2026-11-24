@@ -6,6 +6,7 @@ public class SwimClub {
     private String name;
     private ArrayList<Member> members = new ArrayList<>();
 
+
     public SwimClub(String name) {
         this.name = name;
     }

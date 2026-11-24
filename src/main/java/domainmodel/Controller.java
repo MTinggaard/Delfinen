@@ -1,14 +1,19 @@
 package domainmodel;
 
+import datasource.FileHandler;
+
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Controller {
-private SwimClub swimClub;
-private Chairman chairman;
-private Treasurer treasurer;
-private Trainer trainer;
-private Role loggedInUser;
+    private SwimClub swimClub;
+    private Chairman chairman;
+    private Treasurer treasurer;
+    private Trainer trainer;
+    private Role loggedInUser;
+    private FileHandler fileHandler = new FileHandler("members.csv");
+    private boolean changed;
 
 
     public Controller() {
@@ -18,32 +23,33 @@ private Role loggedInUser;
         this.trainer = new Trainer(swimClub);
     }
 
+    public ArrayList<Member> getMemberList() {
+        return chairman.getMemberList();
+    }
 
     public ArrayList<Member> getMemberList(MemberType memberType) {
         ArrayList<Member> members = new ArrayList<>();
-        if(memberType == null) {
-            return chairman.getMemberList();
-        }
-        switch (memberType){
+
+        switch (memberType) {
             case PASSIVE -> {
-                for(Member member : chairman.getMemberList()){
-                    if(member.getMemberType().equals(MemberType.PASSIVE)){
+                for (Member member : chairman.getMemberList()) {
+                    if (member.getMemberType().equals(MemberType.PASSIVE)) {
                         members.add(member);
                     }
                 }
                 return members;
             }
             case EXERCISEER -> {
-                for(Member member : chairman.getMemberList()){
-                    if(member.getMemberType().equals(MemberType.EXERCISEER)){
+                for (Member member : chairman.getMemberList()) {
+                    if (member.getMemberType().equals(MemberType.EXERCISEER)) {
                         members.add(member);
                     }
                 }
                 return members;
             }
             case COMPETITIVE -> {
-                for(Member member : chairman.getMemberList()){
-                    if(member.getMemberType().equals(MemberType.COMPETITIVE)){
+                for (Member member : chairman.getMemberList()) {
+                    if (member.getMemberType().equals(MemberType.COMPETITIVE)) {
                         members.add(member);
                     }
                 }
@@ -59,17 +65,23 @@ private Role loggedInUser;
         return chairman.isJunior(member);
     }
 
-    public Member createMember(String name, LocalDate birthdate, MemberType memberType, ArrayList<SwimDisciplin> swimDiscipline){
-        return chairman.createMember(name, birthdate, memberType, swimDiscipline);
+    public Member createMember(String name, LocalDate birthdate, MemberType memberType, ArrayList<SwimDisciplin> swimDiscipline) {
+        Member member = chairman.createMember(name, birthdate, memberType, swimDiscipline);
+        changed = true;
+        return member;
     }
 
-    public double getMemberShipFee(Member member){
+    public double getMemberShipFee(Member member) {
         return treasurer.getMembershipFee(member);
     }
 
-    public boolean getPaidInfo(Member member) { return treasurer.getPaidinfo(member);}
+    public boolean getPaidInfo(Member member) {
+        return treasurer.getPaidinfo(member);
+    }
 
-    public boolean setMemberHasPayed(Member member){ return treasurer.setMemberPayed(member);}
+    public boolean setMemberHasPayed(Member member) {
+        return treasurer.setMemberPayed(member);
+    }
 
     public Chairman getChairman() {
         return chairman;
@@ -80,11 +92,11 @@ private Role loggedInUser;
     }
 
     public void setLoggedInUser(String username, String password) {
-        if(username.equals("formand") && password.equals("1234")){
+        if (username.equals("formand") && password.equals("1234")) {
             this.loggedInUser = Role.CHAIRMAN;
-        }else if(username.equals("kasserer") && password.equals("1234")){
+        } else if (username.equals("kasserer") && password.equals("1234")) {
             this.loggedInUser = Role.TREASURER;
-        }else if(username.equals("træner") && password.equals("1234")){
+        } else if (username.equals("træner") && password.equals("1234")) {
             this.loggedInUser = Role.TRAINER;
         } else this.loggedInUser = Role.DENIEDUSER;
     }
@@ -92,6 +104,7 @@ private Role loggedInUser;
     public RegistrationOutcome registerResult(Member member, TrainingResult newResult) {
         return trainer.registerResult(member, newResult);
     }
+
     public RegistrationOutcome registerResult(Member member, CompetitionResult newResult) {
         return trainer.registerResult(member, newResult);
     }
@@ -100,11 +113,34 @@ private Role loggedInUser;
         return swimClub.findMember(memberNumber);
     }
 
-    public ArrayList<Member> getJuniorMembers(){
+    public ArrayList<Member> getJuniorMembers() {
         return trainer.getJuniorMembers();
     }
 
-    public ArrayList<Member> getSeniorMembers(){
+    public ArrayList<Member> getSeniorMembers() {
         return trainer.getSeniorMembers();
     }
+
+    public boolean saveMembersIfChanged() throws FileNotFoundException {
+        if (!changed) {
+            return false;
+        }
+        fileHandler.saveMembersInFile(getMemberList());
+        changed = false;
+        return true;
+    }
+
+    public int loadMembers() throws FileNotFoundException {
+        int loadCount = 0;
+        for (Member member : fileHandler.loadMembers()) {
+            getMemberList().add(member);
+            loadCount++;
+        }
+        return loadCount;
+    }
+
+    public int getSkippedLineCount() {
+        return fileHandler.getSkippedLineCount();
+    }
+
 }
