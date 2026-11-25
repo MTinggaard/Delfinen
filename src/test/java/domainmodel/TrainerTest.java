@@ -151,4 +151,72 @@ public class TrainerTest {
 
         assertNull(member.getTrainingResultFor(BUTTERFLY));
     }
+    @Test
+    void validCompetitionResultIsRegistered() {
+        ArrayList<SwimDisciplin> disciplines = new ArrayList<>();
+        disciplines.add(CRAWL);
+
+        Member member = chairman.createMember("Torben", LocalDate.now().minusYears(19),
+                MemberType.COMPETITIVE, disciplines);
+
+        CompetitionResult result = new CompetitionResult(CRAWL, 6532, LocalDate.now(), "DM", 1);
+
+
+        RegistrationOutcome outcome = trainer.registerResult(member, result);
+
+
+        assertEquals(SUCCESS, outcome);
+        assertTrue(member.getCompetitionResults().contains(result));
+    }
+    @Test
+    void exerciserCompetitionResultIsRejected() {
+        ArrayList<SwimDisciplin> disciplines = new ArrayList<>();
+        disciplines.add(CRAWL);
+
+        Member member = chairman.createMember("Torben", LocalDate.now().minusYears(19),
+                MemberType.EXERCISEER, disciplines);
+
+        CompetitionResult result = new CompetitionResult(CRAWL, 6532, LocalDate.now(), "DM", 1);
+
+
+        RegistrationOutcome outcome = trainer.registerResult(member, result);
+
+
+        assertEquals(NOT_COMPETITIVE, outcome);
+        assertFalse(member.getCompetitionResults().contains(result));
+    }
+    @Test
+    void passiveCompetitionResultIsRejected() {
+        ArrayList<SwimDisciplin> disciplines = new ArrayList<>();
+        disciplines.add(CRAWL);
+
+        Member member = chairman.createMember("Torben", LocalDate.now().minusYears(19),
+                MemberType.PASSIVE, disciplines);
+
+        CompetitionResult result = new CompetitionResult(CRAWL, 6532, LocalDate.now(), "DM", 1);
+
+
+        RegistrationOutcome outcome = trainer.registerResult(member, result);
+
+
+        assertEquals(NOT_COMPETITIVE, outcome);
+        assertFalse(member.getCompetitionResults().contains(result));
+    }
+    @Test
+    void invalidPlacementThrowsException(){
+        assertThrows(IllegalArgumentException.class, () -> new CompetitionResult(CRAWL, 6532, LocalDate.now(), "VM", 0));
+    }
+    @Test
+    void invalidTimeThrowsException(){
+        assertThrows(IllegalArgumentException.class, () -> new CompetitionResult(CRAWL, 0, LocalDate.now(), "VM", 1));
+    }
+    @Test
+    void unknownMemberNumberIsNotFound(){
+        Member member = chairman.createMember("Torben", LocalDate.now().minusYears(19),
+                MemberType.PASSIVE, new ArrayList<>());
+
+        assertNull(swimClub.findMember(999));
+
+
+    }
 }
