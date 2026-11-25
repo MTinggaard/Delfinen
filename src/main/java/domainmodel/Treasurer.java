@@ -19,4 +19,13 @@ public class Treasurer {
                 member.getMemberShipFee().setIsPaid();
                 return true;
     }
+
+    public double getExpectedTotalMemberShipFee(){
+        double sumOfMembershipFee = 0;
+        for (Member member : swimClub.getMembers()) {
+            sumOfMembershipFee += getMembershipFee(member);
+        }
+
+        return sumOfMembershipFee;
+    }
 }
