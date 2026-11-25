@@ -143,4 +143,8 @@ public class Controller {
         return fileHandler.getSkippedLineCount();
     }
 
+    public double getExpectedTotalMemberShipFee(){
+        return treasurer.getExpectedTotalMemberShipFee();
+    }
+
 }

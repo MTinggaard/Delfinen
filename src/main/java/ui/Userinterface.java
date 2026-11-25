@@ -36,7 +36,7 @@ public class Userinterface {
 
             switch (controller.getLoggedInUser()) {
                 case CHAIRMAN -> showChairmanMenu();
-                case TREASURER -> treasurerMenu();
+                case TREASURER -> showTreasurerMenu();
                 case TRAINER -> showTrainerMenu();
                 default -> System.out.println("Ugyldigt login. Prøv igen.");
             }
@@ -244,18 +244,20 @@ public class Userinterface {
         }
     }
 
-    private void treasurerMenu() {
+    private void showTreasurerMenu() {
         boolean inMenu = true;
 
         while (inMenu) {
             System.out.println("========== Kasserer ==========");
             System.out.println("1. Se alle medlemers betaling");
             System.out.println("2. Rediger medlemmers betaling");
+            System.out.println("3. Se foventet indtægt.");
             System.out.println("0. Log ud");
             String choice = scanner.nextLine().trim();
             switch (choice) {
                 case "1" -> showMembershipFees();
                 case "2" -> editPayment();
+                case "3" -> getExpectedTotalMemberShipFee();
                 case "0" -> inMenu = false;
                 default -> System.out.println("Den kommando kendes ikke");
             }
@@ -530,5 +532,9 @@ public class Userinterface {
         } catch (FileNotFoundException e) {
             System.out.println("Medlemslisten kunne ikke gemmes: " + e.getMessage());
         }
+    }
+
+    public void getExpectedTotalMemberShipFee(){
+        System.out.println("Forventet indtægt: " + controller.getExpectedTotalMemberShipFee() + "Kr.");
     }
 }
