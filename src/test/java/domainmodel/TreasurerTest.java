@@ -62,36 +62,90 @@ class TreasurerTest {
     }
 
     @Test
-    void newMemberStartsAsNotPayed(){
+    void newMemberStartsAsNotPayed() {
         SwimClub swimClub = new SwimClub("guldbar");
         Chairman chairman = new Chairman(swimClub);
         Treasurer treasurer = new Treasurer(swimClub);
-       Member member = chairman.createMember("gustav",LocalDate.of(2003,12,12),MemberType.PASSIVE,null);
+        Member member = chairman.createMember("gustav", LocalDate.of(2003, 12, 12), MemberType.PASSIVE, null);
 
         assertFalse(treasurer.getPaidinfo(member));
     }
+
     @Test
-    void setMemberAsPayed(){
+    void setMemberAsPayed() {
         SwimClub swimClub = new SwimClub("guldbar");
         Chairman chairman = new Chairman(swimClub);
         Treasurer treasurer = new Treasurer(swimClub);
-        Member member = chairman.createMember("gustav",LocalDate.of(2003,12,12),MemberType.PASSIVE,null);
+        Member member = chairman.createMember("gustav", LocalDate.of(2003, 12, 12), MemberType.PASSIVE, null);
 
         treasurer.setMemberPayed(member);
 
         assertTrue(treasurer.getPaidinfo(member));
     }
+
     @Test
-    void tresuererReturnsPrice(){
+    void tresuererReturnsPrice() {
         SwimClub swimClub = new SwimClub("guldbar");
         Chairman chairman = new Chairman(swimClub);
         Treasurer treasurer = new Treasurer(swimClub);
-        Member member = chairman.createMember("gustav",LocalDate.of(2003,12,12),MemberType.PASSIVE,null);
+        Member member = chairman.createMember("gustav", LocalDate.of(2003, 12, 12), MemberType.PASSIVE, null);
 
         double fee = treasurer.getMembershipFee(member);
         //we know that it is going to be 500 since he is a pasiv member
 
-        assertEquals(500,fee);
+        assertEquals(500, fee);
+    }
+
+    private Member addFourMembers(Chairman chairman) {
+        Member junior = chairman.createMember("Junior", LocalDate.now().minusYears(15), MemberType.EXERCISEER, new ArrayList<>());
+        chairman.createMember("Senior", LocalDate.now().minusYears(30), MemberType.EXERCISEER, new ArrayList<>());
+        chairman.createMember("Senior60", LocalDate.now().minusYears(65), MemberType.EXERCISEER, new ArrayList<>());
+        chairman.createMember("Passiv", LocalDate.now().minusYears(40), MemberType.PASSIVE, new ArrayList<>());
+        return junior;
+    }
+
+
+    @Test
+    void expectedIncomeWithFourMembersIs4300() {
+        SwimClub swimClub = new SwimClub("guldbar");
+        Chairman chairman = new Chairman(swimClub);
+        Treasurer treasurer = new Treasurer(swimClub);
+        addFourMembers(chairman);
+
+        assertEquals(4300, treasurer.getExpectedTotalMemberShipFee());
+    }
+
+    @Test
+    void expectedIncomeIsSameWhenOneMemberHasPaid() {
+        SwimClub swimClub = new SwimClub("guldbar");
+        Chairman chairman = new Chairman(swimClub);
+        Treasurer treasurer = new Treasurer(swimClub);
+        Member junior = addFourMembers(chairman);
+
+        treasurer.setMemberPayed(junior);
+
+        assertEquals(4300, treasurer.getExpectedTotalMemberShipFee());
+    }
+
+    @Test
+    void expectedIncomeIncreasesWhenNewJuniorIsAdded() {
+        SwimClub swimClub = new SwimClub("guldbar");
+        Chairman chairman = new Chairman(swimClub);
+        Treasurer treasurer = new Treasurer(swimClub);
+        addFourMembers(chairman);
+
+        chairman.createMember("Ny junior", LocalDate.now().minusYears(12), MemberType.EXERCISEER, new ArrayList<>());
+
+        assertEquals(5300, treasurer.getExpectedTotalMemberShipFee());
+    }
+
+    @Test
+    void expectedIncomeWithNoMembersIsZero() {
+        SwimClub swimClub = new SwimClub("guldbar");
+        Chairman chairman = new Chairman(swimClub);
+        Treasurer treasurer = new Treasurer(swimClub);
+
+        assertEquals(0, treasurer.getExpectedTotalMemberShipFee());
     }
 
 
